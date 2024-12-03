@@ -52,14 +52,33 @@ export function Sidebar({ children }) {
   );
 }
 
-export function SidebarItem({ icon, text, active, alert }) {
+export function SidebarItem({ icon, text, active, alert, keluar, beranda }) {
   const expanded = useContext(SidebarContext);
+
+  // Tentukan warna berdasarkan properti
+  const itemClass = keluar
+    ? "text-red-500 hover:bg-red-100"
+    : beranda
+    ? "text-blue-500 hover:bg-blue-100 mt-5"
+    : active
+    ? "bg-white text-emerald-600"
+    : "text-white hover:bg-emerald-400";
+
+  const hoverClass = keluar
+    ? "bg-red-100 text-red-500"
+    : beranda
+    ? "bg-blue-100 text-blue-500"
+    : "bg-emerald-100 text-emerald-500";
+
+  const alertClass = keluar
+    ? "bg-red-500"
+    : beranda
+    ? "bg-blue-500"
+    : "bg-emerald-400";
 
   return (
     <li
-      className={`relative flex justify-center items-center py-2 px-2 my-1 font-medium rounded-md cursor-pointer transition-colors group text-white ${
-        active ? "bg-white text-emerald-500" : "hover:bg-emerald-400"
-      }`}
+      className={`relative flex justify-center items-center py-2 px-2 my-1 font-medium rounded-md cursor-pointer transition-colors group ${itemClass}`}
     >
       {icon}
 
@@ -75,7 +94,7 @@ export function SidebarItem({ icon, text, active, alert }) {
       {/* Text Hover ketika sidebar ditutup */}
       {!expanded && (
         <div
-          className={`absolute text-xs font-medium left-full opacity-0 rounded-md px-2 py-1 ml-6 bg-emerald-100 text-emerald-500 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+          className={`absolute text-xs font-medium left-full opacity-0 rounded-md px-2 py-1 ml-6 ${hoverClass} -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
         >
           {text}
         </div>
@@ -84,7 +103,7 @@ export function SidebarItem({ icon, text, active, alert }) {
       {/* Alert Notification Jika Diperlukan */}
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-emerald-400 top-1/2 transform -translate-y-1/2 invisible group-hover:visible group-hover:opacity-100`}
+          className={`absolute right-2 w-2 h-2 rounded ${alertClass} top-1/2 transform -translate-y-1/2 invisible group-hover:visible group-hover:opacity-100`}
         />
       )}
     </li>
