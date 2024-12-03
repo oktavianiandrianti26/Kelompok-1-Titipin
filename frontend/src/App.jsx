@@ -1,14 +1,16 @@
-import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import HeaderUser from './components/headerUser';
+import './index.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      
-    </>
-  )
+    <div>
+      <HeaderUser />
+      <main>
+        {/* Konten lainnya */}
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
