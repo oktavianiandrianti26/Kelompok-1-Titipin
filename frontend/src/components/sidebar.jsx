@@ -78,7 +78,7 @@ export function SidebarItem({ icon, text, active, alert, keluar, beranda }) {
 
   return (
     <li
-      className={`relative flex justify-center items-center py-2 px-2 my-1 font-medium rounded-md cursor-pointer transition-colors group ${itemClass}`}
+      className={`relative flex items-center mx-3 py-2 px-2 my-1 font-medium rounded-md cursor-pointer transition-colors group ${itemClass}`}
     >
       {icon}
 
