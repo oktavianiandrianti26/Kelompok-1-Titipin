@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import HeaderUser from './components/headerUser';
 import { Buttons } from './components/button';
+import Dashboard from './user/dashboard'; 
+
 import './index.css';
 
 function App() {
