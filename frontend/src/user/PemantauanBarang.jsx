@@ -113,4 +113,3 @@ const PemantauanBarang = () => {
 };
 
 export default PemantauanBarang;
-
