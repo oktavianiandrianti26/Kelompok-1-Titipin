@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SidebarUser from "../components/SidebarUser";
-import HeaderUser from "../components/headerUser";
+import HeaderUser from "../components/HeaderUser";
 
 const PemantauanBarang = () => {
   const data = [
