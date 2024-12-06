@@ -1,40 +1,39 @@
-import React, { useState } from 'react';
-import HeaderUser from './components/headerUser';
-import { Buttons } from './components/button';
-import Dashboard from './user/dashboard'; 
 
-import './index.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+import React from "react";
+import { HeaderAdmin, HeaderManajemenPengguna, HeaderManajemenPenitipanBarang, HeaderManajemenPembayaran, HeaderRiwayatPenitipan, HeaderUlasanPengguna, HeaderPengirimanNotifikasi, HeaderSupportChat} 
+from "./components/headerAdmin"; 
 
-  // Function to render buttons dynamically
-  const renderButtons = (buttons) => {
-    return Object.keys(buttons).map((key) => (
-      <div key={key}>
-        {buttons[key](() => setCount((prevCount) => prevCount + 1))} {/* Update count */}
-      </div>
-    ));
-  };
-
+const App = () => {
   return (
     <div>
-      <HeaderUser />
-      <main>
-        {/* Konten lainnya */}
-      </main>
+      {/* Menampilkan Header Admin */}
+      <HeaderAdmin />
 
-      <div className="min-h-screen bg-gray-100 p-8">
-        <div className="space-y-4">
-          <h2>Buttons</h2>
-          {renderButtons(Buttons)} {/* Render the buttons */}
-          <div>
-            <p>Count: {count}</p> {/* Display the count */}
-          </div>
-        </div>
-      </div>
+      {/* Menampilkan Header ManajemenPengguna */}
+      <HeaderManajemenPengguna />
+
+      {/* Menampilkan Header ManajemenPentipanBarang */}
+      <HeaderManajemenPenitipanBarang />
+
+      {/* Menampilkan Header Manajemen Pembayaran */}
+      <HeaderManajemenPembayaran />
+
+      {/* Menampilkan Hader Riwayat Penitipan */}
+      <HeaderRiwayatPenitipan />
+
+      {/* Menampilkan Header Ulasan Pengguna*/}
+      <HeaderUlasanPengguna />
+
+      {/* Menampilkan Header Pengiriman Notifikasi*/}
+      <HeaderPengirimanNotifikasi />
+
+       {/* Menampilkan Header Support Chat*/}
+       <HeaderSupportChat />
     </div>
   );
-}
+};
+
+
 
 export default App;
