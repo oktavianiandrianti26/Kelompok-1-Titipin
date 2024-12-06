@@ -1,4 +1,5 @@
 
+
 import React from "react";
 import { HeaderAdmin, HeaderManajemenPengguna, HeaderManajemenPenitipanBarang, HeaderManajemenPembayaran, HeaderRiwayatPenitipan, HeaderUlasanPengguna, HeaderPengirimanNotifikasi, HeaderSupportChat} 
 from "./components/headerAdmin"; 
@@ -34,4 +35,5 @@ const App = () => {
 };
 
 
-export default App
+
+export default App;
