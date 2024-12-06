@@ -1,20 +1,35 @@
-import React from 'react';
-import HeaderUser from './components/headerUser';
-import HeaderAdmin from './components/headerAdmin';
-import './index.css';
+import React from "react";
+import { HeaderAdmin, HeaderManajemenPengguna, HeaderManajemenPenitipanBarang, HeaderManajemenPembayaran, HeaderRiwayatPenitipan, HeaderUlasanPengguna, HeaderPengirimanNotifikasi, HeaderSupportChat} 
+from "./components/headerAdmin"; 
 
-function App() {
+const App = () => {
   return (
     <div>
-      <HeaderUser />
-
+      {/* Menampilkan Header Admin */}
       <HeaderAdmin />
 
-      <main>
-        {/* Konten lainnya */}
-      </main>
+      {/* Menampilkan Header ManajemenPengguna */}
+      <HeaderManajemenPengguna />
+
+      {/* Menampilkan Header ManajemenPentipanBarang */}
+      <HeaderManajemenPenitipanBarang />
+
+      {/* Menampilkan Header Manajemen Pembayaran */}
+      <HeaderManajemenPembayaran />
+
+      {/* Menampilkan Hader Riwayat Penitipan */}
+      <HeaderRiwayatPenitipan />
+
+      {/* Menampilkan Header Ulasan Pengguna*/}
+      <HeaderUlasanPengguna />
+
+      {/* Menampilkan Header Pengiriman Notifikasi*/}
+      <HeaderPengirimanNotifikasi />
+
+       {/* Menampilkan Header Support Chat*/}
+       <HeaderSupportChat />
     </div>
   );
-}
+};
 
 export default App;
