@@ -1,7 +1,7 @@
 import React from "react";
 import SidebarUser from "../components/SidebarUser";
-import HeaderUser from "../components/headerUser";
-import { Buttons } from '../components/button'; 
+import HeaderUser from "../components/HeaderUser";
+import { Buttons } from '../components/Button'; 
 
 const Dashboard = () => {
   const handleVisitClick = () => {;
