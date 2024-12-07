@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeaderUser from "../components/HeaderUser";
 import SidebarUser from "../components/SidebarUser";
-import { Buttons } from "../components/button"; // Sesuaikan dengan path file button.jsx
+import { Buttons } from "../components/Button"; 
 
 const PengambilanBarang = () => {
   // Data barang dengan ID penitipan, jumlah barang, dan deskripsi
