@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import Button from "../components/button"; // Import the Button component
+import Button from "../components/Button"; // Import the Button component
 
 // Data untuk menu
 const menuItems = [
