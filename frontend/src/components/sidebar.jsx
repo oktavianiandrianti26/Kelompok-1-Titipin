@@ -7,7 +7,7 @@ export function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <aside className="h-screen">
+    <aside className="h-min-screen ">
       <nav className="h-full flex flex-col bg-emerald-500 border-r shadow-sm">
         <div className="p-4 pb-2 flex items-center">
           <button
