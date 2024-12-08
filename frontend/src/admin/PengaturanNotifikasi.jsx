@@ -17,16 +17,16 @@ const PengaturanNotifikasi = () => {
 
       {/* Main Content */}
       {/* Main Content */}
-      <main className="flex-1 p-6 bg-gray-100">
+      <main className="flex-1 p-6">
       <HeaderPengirimanNotifikasi />
       
-          <div className="border border-gray-300 rounded-lg p-6">
+          <div className="border border-emerald-500 rounded-lg p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
               Pengiriman Notifikasi
             </h2>
             <p className="text-gray-600 mb-4">
               Kirimkan pesan kepada user melalui notifikasi.
-            </p>
+            </p>
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
                 Pengguna
