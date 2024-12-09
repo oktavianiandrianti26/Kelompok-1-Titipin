@@ -104,4 +104,5 @@ export const HeaderSupportChat= () => {
   );
 };
 
+export default HeaderAdmin;
 
