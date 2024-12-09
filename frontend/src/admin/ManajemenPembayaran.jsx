@@ -41,7 +41,7 @@ const ManajemenPembayaran = ({ showHeader = true, showSidebar = true }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       {/* Sidebar Admin - Ditampilkan hanya jika showSidebar = true */}
       {showSidebar && <SidebarAdmin />}
 
