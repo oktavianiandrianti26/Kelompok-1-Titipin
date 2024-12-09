@@ -2,6 +2,7 @@ import React from "react";
 import SidebarUser from "../components/SidebarUser";
 import HeaderUser from "../components/HeaderUser";
 import { Buttons } from '../components/Button'; 
+import titipinImage from '../assets/titipin3.png';
 
 const Dashboard = () => {
   const handleVisitClick = () => {;
@@ -16,9 +17,9 @@ const Dashboard = () => {
 
         <div className="p-6">
           <img
-            src="/images/titipin.jpg" 
+            src={titipinImage} 
             alt="Ilustrasi Titipin"
-            className="w-full h-64 object-cover rounded-lg mb-6"
+            className="w-full h-80 object-cover rounded-lg mb-6"
           />
 
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
