@@ -24,7 +24,7 @@ const jumlahBarangData = [
 
 function Dashboard() {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       {/* Sidebar and main content */}
       <SidebarAdmin />
       <div className="p-8 flex flex-col w-full">

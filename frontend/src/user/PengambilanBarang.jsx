@@ -57,7 +57,7 @@ const PengambilanBarang = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <SidebarUser />
       <div className="flex flex-col w-full">
         <HeaderUser />
