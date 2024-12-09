@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import RoomImage from '../assets/form.png';
 import { Link, useNavigate } from "react-router-dom";
-import { Buttons } from "../components/button";
+import { Buttons } from "../components/Button";
 
 // Komponen ToggleSwitch
 

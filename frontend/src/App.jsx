@@ -1,39 +1,18 @@
-
-
 import React from "react";
-import { HeaderAdmin, HeaderManajemenPengguna, HeaderManajemenPenitipanBarang, HeaderManajemenPembayaran, HeaderRiwayatPenitipan, HeaderUlasanPengguna, HeaderPengirimanNotifikasi, HeaderSupportChat} 
-from "./components/headerAdmin"; 
+import SupportChat from "./admin/SupportChat";
+import UlasanPengguna from  "./admin/UlasanPengguna";
+import PemesananPenitipan from "./user/PemesananPenitipan";
+import ManajemenPenitipanBarang from "./admin/ManajemenPenitipanBarang";
 
 const App = () => {
   return (
     <div>
-      {/* Menampilkan Header Admin */}
-      <HeaderAdmin />
-
-      {/* Menampilkan Header ManajemenPengguna */}
-      <HeaderManajemenPengguna />
-
-      {/* Menampilkan Header ManajemenPentipanBarang */}
-      <HeaderManajemenPenitipanBarang />
-
-      {/* Menampilkan Header Manajemen Pembayaran */}
-      <HeaderManajemenPembayaran />
-
-      {/* Menampilkan Hader Riwayat Penitipan */}
-      <HeaderRiwayatPenitipan />
-
-      {/* Menampilkan Header Ulasan Pengguna*/}
-      <HeaderUlasanPengguna />
-
-      {/* Menampilkan Header Pengiriman Notifikasi*/}
-      <HeaderPengirimanNotifikasi />
-
-       {/* Menampilkan Header Support Chat*/}
-       <HeaderSupportChat />
+      <SupportChat />
+      <UlasanPengguna />
+      <PemesananPenitipan />
+      <ManajemenPenitipanBarang />
     </div>
   );
 };
-
-
 
 export default App;
