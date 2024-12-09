@@ -23,7 +23,7 @@ const ManajemenPengguna = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <SidebarAdmin />
 
        <div className="flex-1 p-6">

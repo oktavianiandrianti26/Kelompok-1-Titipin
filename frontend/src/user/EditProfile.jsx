@@ -24,7 +24,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <SidebarUser />
 
       <div className="flex-1 p-6">
