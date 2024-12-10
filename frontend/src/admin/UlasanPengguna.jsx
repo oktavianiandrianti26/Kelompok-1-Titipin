@@ -28,7 +28,7 @@ const UlasanPengguna = () => {
       {/* Content */}
       <div className="flex-1 flex flex-col">
         <HeaderUlasanPengguna/>
-        <div className="p-4 sm:p-6 bg-gray-100 flex-1">
+        <div className="p-4 sm:p-6 flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {chatData.map((chat) => (
               <div
