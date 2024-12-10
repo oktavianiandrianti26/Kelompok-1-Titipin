@@ -66,7 +66,7 @@ const SupportChat = () => {
             {chatData.map((chat) => (
               <div
                 key={chat.id}
-                className="border border-gray-300 rounded-lg p-4 shadow-sm"
+                className="border border-emerald-500 rounded-lg p-4 shadow-sm"
               >
                 <div className="mb-2">
                   <p className="font-medium">{chat.name}</p>
