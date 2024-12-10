@@ -9,14 +9,7 @@ const notifikasi = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-8">
-      <header className="bg-white">
-      <div className="py-4 px-4 md:px-6">
-        <h1 className="text-4xl font-semibold text-gray-600">Selamat Datang</h1>
-        <p className="text-base font-normal text-gray-500">
-        Anda dapat melihat notifikasi pemesanan disini Anda
-        </p>
-      </div>
-      </header>
+      <HeaderUser/>
             <div className="border border-green-500 rounded-lg">
                 <div className="flex justify-between items-center p-4 border-b border-green-500">
                     <h2 className="text-lg font-semibold">Notifikasi</h2>
