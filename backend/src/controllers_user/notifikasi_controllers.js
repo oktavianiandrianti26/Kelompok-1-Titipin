@@ -21,7 +21,7 @@ const pushNotifications = async (req, res) => {
   try {
     // Gunakan model untuk menyisipkan dokumen
     const newNotification = await NotificationInternal.create({
-      balasan: req.body.balasan, ulasan: req.body.ulasan, userId: req.body.userId,
+      balasan: req.body.balasan, ulasan: req.body.ulasan, user_id: req.body.user_id,
     });
     return res.status(200).json(newNotification);
   } catch (error) {
