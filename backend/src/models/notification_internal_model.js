@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const NotificationInternalSchema = new mongoose.Schema(
   {
     balasan: {type: String, required: true},
-    userId: {type: String, required: true},
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     ulasan: {type: String, required: true},
     senderEmail: {type: String, required: false},
     recipients: {type: String, required: false},
