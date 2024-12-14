@@ -119,7 +119,7 @@ const UlasanPengguna = () => {
                       handleSendNotification({
                         balasan: review.balasan,
                         ulasan: review.ulasan,
-                        userId: review.user_id._id,
+                        user_id: review.user_id._id,
                       })
                     }
                     className="flex-1 bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition"
