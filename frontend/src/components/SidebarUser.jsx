@@ -23,8 +23,8 @@ function SidebarUser() {
       <Sidebar>
         <SidebarItem icon={<FiGrid />} text="Dashboard" route="/user/dashboard" active={location.pathname === "/user/dashboard"} />
         <SidebarItem icon={<FiPackage />} text="Penitipan" route="/PemesananPenitipan" active={location.pathname === "/PemesananPenitipan"} />
-        <SidebarItem icon={<FiTruck />} text="Pengembalian" route="/user/PengambilanBarang" active={location.pathname === "/user/PengambilanBarang"} />
-        <SidebarItem icon={<FiEye />} text="Status"  />
+        <SidebarItem icon={<FiTruck />} text="Pengembalian" route="/PengambilanBarang" active={location.pathname === "/PengambilanBarang"} />
+        <SidebarItem icon={<FiEye />} text="Status" route="/PemantauanBarang" active={location.pathname === "/PemantauanBarang"} />
         <SidebarItem icon={<FiFile />} text="Riwayat" route="/RiwayatPenitipan" active={location.pathname === "/RiwayatPenitipan"} />
         <SidebarItem icon={<FiBell />} text="Notifikasi" route="/Notifikasi" active={location.pathname === "/Notifikasi"} />
         <SidebarItem icon={<FiMessageSquare />} text="Chat" route="/faq" active={location.pathname === "/faq"} />

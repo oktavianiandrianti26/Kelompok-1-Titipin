@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, editProfile, getProfile } = require('../controllers_user/autentikasi_controllers');
+const { register, login, editProfile, getProfile, getUsers } = require('../controllers_user/autentikasi_controllers');
 const auth = require('../middleware/auth');
 
 // Route untuk registrasi user
@@ -13,5 +13,7 @@ router.post('/login', login);
 router.put('/edit-profile', auth, editProfile);
 
 router.get('/profile', auth, getProfile);
+
+router.get('/users', getUsers);
 
 module.exports = router;

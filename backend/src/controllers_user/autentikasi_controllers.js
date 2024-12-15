@@ -126,9 +126,20 @@ const editProfile = async (req, res) => {
   }
 };
 
+// Mendapatkan semua pengguna
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find(); // Mendapatkan semua pengguna
+    res.json({ data: users });
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal mengambil data pengguna', error: err });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
   editProfile,
+  getUsers,
 };
