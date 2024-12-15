@@ -33,6 +33,7 @@ app.use("/api/user", riwayatUserRoutes, paymentUserRoutes);
 app.use("/api/admin", riwayatAdminRoutes, paymentAdminRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/user/notifications", notifikasiRoutesUser);
+app.use("/api/admin", ulasanAdminRoutes);
 
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
