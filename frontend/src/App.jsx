@@ -3,7 +3,7 @@ import React from "react";
 //admin
 //import ManajemenPembayaran from "./admin/ManajemenPembayaran";
 //import ManajemenPengguna from "./admin/ManajemenPengguna"
-//import Dashboard from "./admin/Dashboard"
+import DashboardAdmin from "./admin/Dashboard"
 //import ManajemenPenitipanBarang from "./admin/ManajemenPenitipanBarang"
 //import PengaturanNotifikasi from "./admin/PengaturanNotifikasi"
 //import SupportChat from "./admin/SupportChat"
@@ -12,8 +12,8 @@ import React from "react";
 
 //User//
 import Login from "./user/Login";
-import Register from "./user/register"; 
-import Dashboard from "./user/dashboard";
+import Register from "./user/Register"; 
+import DashboardUser from "./user/dashboard";
 import PengambilanBarang from "./user/PengambilanBarang";
 import Notifikasi from "./user/Notifikasi";
 import RiwayatPenitipan from "./user/RiwayatPenitipan";
@@ -22,8 +22,8 @@ import Landing from './landing/LandingPage';
 import EditProfile from './user/EditProfile';
 import PemesananPenitipan from "./user/PemesananPenitipan";
 import PemantauanBarang from "./user/PemantauanBarang";
-import Checkout from "./user/checkout";
-        //<Route path="/" element={<Dashboard />}/>
+// import Checkout from "./user/checkout";
+
         //<Route path="/ManajemenPembayaran" element={<ManajemenPembayaran />}/>
         //<Route path="/ManajemenPengguna" element={<ManajemenPengguna />}/>
         //<Route path="/ManajemenPenitipanBarang" element={<ManajemenPenitipanBarang />}/>
@@ -42,7 +42,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/user/dashboard" element={<DashboardUser />} />
         <Route path="/PemesananPenitipan" element={<PemesananPenitipan />} />
         <Route path="/PengambilanBarang" element={<PengambilanBarang />} />
         <Route path="/Notifikasi" element={<Notifikasi />} />
@@ -50,7 +50,10 @@ function App() {
         <Route path="/faq" element={<Chat />} />
         <Route path="/EditProfile" element={<EditProfile />} />
         <Route path="/PemantauanBarang" element={<PemantauanBarang />} />
-        <Route path="/checkout" element={<Checkout />} />
+        {/* <Route path="/checkout" element={<Checkout />} /> */}
+
+        <Route path="/admin/dashboard" element={<DashboardAdmin />}/>
+        
         </Routes>
     </BrowserRouter>
   );

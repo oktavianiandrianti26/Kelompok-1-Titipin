@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import { Sidebar, SidebarItem } from "./sidebar";
 import {
   FiBell,
@@ -18,32 +17,25 @@ import {
   FiUsers,
 } from "react-icons/fi";
 
-const SidebarUser = () => {
-  const navigate = useNavigate(); // Inisialisasi useNavigate
-
-  // Fungsi untuk menangani klik pada item sidebar
-  const handleVisitClick = (route) => {
-    navigate(route); // Arahkan ke halaman sesuai dengan route yang diberikan
-  };
-
-
-
+function SidebarUser() {
   return (
     <>
       <Sidebar>
-        <SidebarItem icon={<FiGrid />} text="Dashboard" route="/dashboard"/>
-        <SidebarItem icon={<FiPackage />} text="Penitipan" route="/PemesananPenitipan" onClick={() => handleVisitClick('/PemesananPenitipan')}/>
-        <SidebarItem icon={<FiTruck />} text="Pengembalian" route="/PengambilanBarang"/>
-        <SidebarItem icon={<FiEye />} text="Status" route="/PemantauanBarang" />
-        <SidebarItem icon={<FiFile />} text="Riwayat" route="/RiwayatPenitipan"/>
-        <SidebarItem icon={<FiBell />} text="Notifikasi" route="/Notifikasi"/>
-        <SidebarItem icon={<FiMessageSquare />} text="Chat" route="/Faq"/>
-        <SidebarItem icon={<FiUser />} text="Profil" route="/EditProfile"/>
-        <SidebarItem icon={<FiHome />} text="Beranda" beranda route="/"/>
-        <SidebarItem icon={<FiLogOut />} text="Keluar" keluar route="/Login"/>
+        <SidebarItem icon={<FiGrid />} text="Dashboard" route="/user/dashboard" active={location.pathname === "/user/dashboard"} />
+        <SidebarItem icon={<FiPackage />} text="Penitipan" route="/PemesananPenitipan" active={location.pathname === "/PemesananPenitipan"} />
+        <SidebarItem icon={<FiTruck />} text="Pengembalian" route="/user/PengambilanBarang" active={location.pathname === "/user/PengambilanBarang"} />
+        <SidebarItem icon={<FiEye />} text="Status"  />
+        <SidebarItem icon={<FiFile />} text="Riwayat" route="/RiwayatPenitipan" active={location.pathname === "/RiwayatPenitipan"} />
+        <SidebarItem icon={<FiBell />} text="Notifikasi" route="/Notifikasi" active={location.pathname === "/Notifikasi"} />
+        <SidebarItem icon={<FiMessageSquare />} text="Chat" route="/faq" active={location.pathname === "/faq"} />
+        <SidebarItem icon={<FiUser />} text="Profil" route="/EditProfile" active={location.pathname === "/EditProfile"} />
+        <SidebarItem icon={<FiHome />} text="Beranda" beranda  />
+        <SidebarItem icon={<FiLogOut />} text="Keluar" keluar   />
       </Sidebar>
     </>
   );
 }
 
 export default SidebarUser;
+
+
