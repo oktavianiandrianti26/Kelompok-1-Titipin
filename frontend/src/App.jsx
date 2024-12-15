@@ -1,18 +1,58 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
-import SupportChat from "./admin/SupportChat";
-import UlasanPengguna from  "./admin/UlasanPengguna";
+//admin
+//import ManajemenPembayaran from "./admin/ManajemenPembayaran";
+//import ManajemenPengguna from "./admin/ManajemenPengguna"
+//import Dashboard from "./admin/Dashboard"
+//import ManajemenPenitipanBarang from "./admin/ManajemenPenitipanBarang"
+//import PengaturanNotifikasi from "./admin/PengaturanNotifikasi"
+//import SupportChat from "./admin/SupportChat"
+//import UlasanPengguna from "./admin/UlasanPengguna"
+//import RiwayatPenitipan from "./admin/RiwayatPenitipan"
+
+//User//
+import Login from "./user/Login";
+import Register from "./user/register"; 
+import Dashboard from "./user/dashboard";
+import PengambilanBarang from "./user/PengambilanBarang";
+import Notifikasi from "./user/Notifikasi";
+import RiwayatPenitipan from "./user/RiwayatPenitipan";
+import Chat from "./user/faq";
+import Landing from './landing/LandingPage';
+import EditProfile from './user/EditProfile';
 import PemesananPenitipan from "./user/PemesananPenitipan";
-import ManajemenPenitipanBarang from "./admin/ManajemenPenitipanBarang";
+import PemantauanBarang from "./user/PemantauanBarang";
+import Checkout from "./user/checkout";
+        //<Route path="/" element={<Dashboard />}/>
+        //<Route path="/ManajemenPembayaran" element={<ManajemenPembayaran />}/>
+        //<Route path="/ManajemenPengguna" element={<ManajemenPengguna />}/>
+        //<Route path="/ManajemenPenitipanBarang" element={<ManajemenPenitipanBarang />}/>
+        //<Route path="/PengaturanNotifikasi" element={<PengaturanNotifikasi />}/>
+        //<Route path="/SupportChat" element={<SupportChat />}/>
+        //<Route path="/UlasanPengguna" element={<UlasanPengguna />}/>
+        //<Route path="/RiwayatPenitipan" element={<RiwayatPenitipan />}/>
 
-const App = () => {
+
+
+function App() {
   return (
-    <div>
-      <SupportChat />
-      <UlasanPengguna />
-      <PemesananPenitipan />
-      <ManajemenPenitipanBarang />
-    </div>
+    <BrowserRouter>
+    
+        <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/PemesananPenitipan" element={<PemesananPenitipan />} />
+        <Route path="/PengambilanBarang" element={<PengambilanBarang />} />
+        <Route path="/Notifikasi" element={<Notifikasi />} />
+        <Route path="/RiwayatPenitipan" element={<RiwayatPenitipan />} />
+        <Route path="/faq" element={<Chat />} />
+        <Route path="/EditProfile" element={<EditProfile />} />
+        <Route path="/PemantauanBarang" element={<PemantauanBarang />} />
+        <Route path="/checkout" element={<Checkout />} />
+        </Routes>
+    </BrowserRouter>
   );
-};
-
+}
 export default App;
