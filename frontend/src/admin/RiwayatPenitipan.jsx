@@ -1,54 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import { HeaderRiwayatPenitipan } from "../components/HeaderAdmin";
+import axios from "axios";
 
 const RiwayatPenitipan = () => {
-  const data = [
-    {
-      nomor: "0001",
-      tanggal: "12-12-2024",
-      deskripsi:
-        "Jumlah Barang: 3\nDeskripsi: Barang adalah Vas Bunga, Koper, dan Bola Basket\nAlamat: maps.com/jl-alam-no-1",
-      total: "Rp. 20.000",
-      pengguna: {
-        nama: "Andi Pratama",
-        email: "andipratama@gmail.com",
-        foto: "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
-      },
-    },
-    {
-      nomor: "0001",
-      tanggal: "12-12-2024",
-      deskripsi:
-        "Jumlah Barang: 3\nDeskripsi: Barang adalah Vas Bunga, Koper, dan Bola Basket\nAlamat: maps.com/jl-alam-no-1",
-      total: "Rp. 20.000",
-      pengguna: {
-        nama: "Andi Pratama",
-        email: "andipratama@gmail.com",
-        foto: "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
-      },
-    },
-    {
-      nomor: "0001",
-      tanggal: "12-12-2024",
-      deskripsi:
-        "Jumlah Barang: 3\nDeskripsi: Barang adalah Vas Bunga, Koper, dan Bola Basket\nAlamat: maps.com/jl-alam-no-1",
-      total: "Rp. 20.000",
-      pengguna: {
-        nama: "Andi Pratama",
-        email: "andipratama@gmail.com",
-        foto: "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
-      },
-    },
-    // Data lainnya dapat ditambahkan di sini
-  ];
-
+  const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
+  useEffect(() => {
+    const fetchTransactionHistory = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/admin/riwayat"
+          // Jika diperlukan otentikasi, Anda dapat menambahkan headers, contoh:
+          // { headers: { Authorization: `Bearer ${your_token}` } }
+        );
+        setTransactions(response.data);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+      }
+    };
+
+    fetchTransactionHistory();
+  }, []);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = transactions.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -80,7 +59,7 @@ const RiwayatPenitipan = () => {
                   <th className="p-3 text-left bg-white">Nomor</th>
                   <th className="p-3 text-left bg-white">Tanggal</th>
                   <th className="p-3 text-left bg-white">Pengguna</th>
-                  <th className="p-3 text-left bg-white">Pembayaran</th>
+                  <th className="p-3 text-left bg-white"> Barang</th>
                   <th className="p-3 text-left bg-white">Total</th>
                 </tr>
               </thead>
@@ -90,42 +69,52 @@ const RiwayatPenitipan = () => {
                     key={index}
                     className="bg-white text-gray-800 border-b border-emerald-500"
                   >
-                    <td className="p-3 text-left">{item.nomor}</td>
+                    <td className="p-3 text-left">{item._id}</td>
                     <td className="p-3 text-left whitespace-nowrap">
                       <span className="bg-emerald-100 text-gray-800 px-3 py-1 rounded-md font-semibold">
-                        {item.tanggal}
+                        {new Date(item.createdAt).toLocaleDateString()}
                       </span>
                     </td>
                     <td className="p-3">
                       <div className="flex items-center space-x-3">
                         <img
-                          src={item.pengguna?.foto || "https://via.placeholder.com/40"}
+                          src={
+                            item.user_id?.foto ||
+                            "https://via.placeholder.com/40"
+                          }
+                          // Import Foto dari user
                           alt="Foto Pengguna"
                           className="w-10 h-10 rounded-full object-cover"
                         />
                         <div>
                           <p className="font-semibold text-black-800">
-                            {item.pengguna?.nama || "Nama tidak tersedia"}
+                            {item.user_id?.nama || "Data tidak tersedia"}
                           </p>
                           <p className="text-gray-700">
-                            {item.pengguna?.email || "Email tidak tersedia"}
+                            {item.user_id?.email || "Data tidak tersedia"}
                           </p>
                         </div>
                       </div>
                     </td>
                     <td className="p-3 whitespace-pre-line">
-                      <span className="font-semibold text-gray-800">Jumlah Barang:</span>{" "}
-                      {item.deskripsi.split("\n")[0].split(": ")[1]}
+                      <span className="font-semibold text-gray-800">
+                        Berat Barang:{" "}
+                      </span>
+                      {item.barang_id?.berat || "Data tidak tersedia"}
                       <br />
-                      <span className="font-semibold text-gray-800">Deskripsi:</span>{" "}
-                      {item.deskripsi.split("\n")[1]}
+                      <span className="font-semibold text-gray-800">
+                        Deskripsi:{" "}
+                      </span>
+                      {item.barang_id?.deskripsi || "Data tidak tersedia"}{" "}
                       <br />
-                      <span className="font-semibold text-gray-800">Alamat:</span>{" "}
-                      {item.deskripsi.split("\n")[2]}
+                      <span className="font-semibold text-gray-800">
+                        Alamat:{" "}
+                      </span>
+                      {item.titik_alamat || "Data tidak tersedia"}
                     </td>
                     <td className="p-3 border-r border-emerald-500 whitespace-nowrap">
                       <span className="text-gray-800 px-3 py-1 rounded-md">
-                        {item.total}
+                        {item.total_biaya || "Rp. 0"}
                       </span>
                     </td>
                   </tr>
@@ -162,5 +151,3 @@ const RiwayatPenitipan = () => {
 };
 
 export default RiwayatPenitipan;
-
-
