@@ -5,7 +5,7 @@ const User = require("../models/user_model");
 const getAllUserReviews = async (req, res) => {
   try {
     const reviews = await Transaction.find({ ulasan: { $exists: true, $ne: "" } })
-      .populate("user_id", "email nama")  // Menambahkan nama dan email user
+      .populate("user_id", "email name")  // Menambahkan nama dan email user
       .select("ulasan balasan");
 
     if (!reviews || reviews.length === 0) {
