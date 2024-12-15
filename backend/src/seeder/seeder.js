@@ -74,6 +74,7 @@ const generateRandomData = async () => {
     const transactions = [];
     for (let i = 0; i < 3; i++) {
       const transaction = new Transaction({
+        id_transaction: `transaction${i + 1}`, // Ensure 'new' is used here for ObjectId
         user_id: users[i]._id, // User from the created users
         warehouse_id: warehouse._id, // Warehouse from the created warehouse
         barang_id: barang[i]._id, // Barang from the created barang
@@ -91,6 +92,7 @@ const generateRandomData = async () => {
     const payments = [];
     for (let i = 0; i < 3; i++) {
       const payment = new Payment({
+        user_id: users[i]._id, // Link to user
         payment_id: `payment${i + 1}`,
         transaction_id: transactions[i]._id, // Use transaction ID from the created transactions
         jumlah_bayar: Math.floor(Math.random() * 200) + 50, // Random payment amount
