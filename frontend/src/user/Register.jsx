@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoomImage from '../assets/form.png';
 import { Buttons } from "../components/Button";
+import axios from 'axios'; // Import axios
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -13,9 +14,10 @@ const RegisterPage = () => {
 
   const navigate = useNavigate(); // Hook untuk navigasi
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validasi form
     if (password !== confirmPassword) {
       alert('Password dan Konfirmasi Password tidak cocok');
       return;
@@ -25,8 +27,28 @@ const RegisterPage = () => {
       return;
     }
 
-    // Mengarahkan ke halaman login setelah berhasil
-    navigate('/');
+    // Membuat objek data untuk dikirim ke backend
+    const userData = {
+      name,
+      email,
+      phone,
+      password,
+      konfirmasi_password: confirmPassword,
+    };
+
+    try {
+      // Mengirim data ke backend menggunakan axios
+      const response = await axios.post('http://localhost:3000/api/user/register', userData);
+      console.log(response.data); // Menampilkan respon dari backend
+
+      if (response.data) {
+        alert('Pendaftaran berhasil');
+        navigate('/Login'); // Redirect ke halaman login setelah berhasil
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Terjadi kesalahan, coba lagi nanti');
+    }
   };
 
   return (

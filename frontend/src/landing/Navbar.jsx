@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Buttons } from "../components/Button";
+import { useNavigate } from 'react-router-dom';
 
 // Data untuk menu
 const menuItems = [
@@ -19,9 +20,19 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Fungsi untuk handle click pada tombol
-  const handleClick = (action) => {
-    console.log(`${action} button clicked!`); // Placeholder untuk action
+  // Gunakan useNavigate untuk navigasi
+  const navigate = useNavigate();
+
+  // Fungsi untuk handle click pada tombol Masuk
+  const handleLoginClick = () => {
+    // Navigasi ke halaman login
+    navigate("/login");
+  };
+
+  // Fungsi untuk handle click pada tombol Daftar
+  const handleRegisterClick = () => {
+    // Navigasi ke halaman daftar (misalnya /register)
+    navigate("/register");
   };
 
   return (
@@ -47,9 +58,11 @@ const Navbar = () => {
 
         {/* Tombol Daftar dan Masuk */}
         <div className="hidden md:flex space-x-4">
-          {/* Click disesuaikan dengan kebutuhan */}
-          {Buttons.login(() => handleClick("Masuk"))}
-          {Buttons.daftar(() => handleClick("Daftar"))}
+          {/* Tombol Masuk yang mengarah ke halaman login */}
+          {Buttons.login(handleLoginClick)}
+
+          {/* Tombol Daftar yang mengarah ke halaman daftar */}
+          {Buttons.daftar(handleRegisterClick)}
         </div>
 
         {/* Tombol Toggle Menu untuk Mobile */}
@@ -73,9 +86,11 @@ const Navbar = () => {
 
           {/* Tombol Masuk dan Daftar untuk Mobile */}
           <div className="flex space-x-4">
-            {/* Click disesuaikan dengan kebutuhan */}
-            {Buttons.login(() => handleClick("Masuk"))}
-            {Buttons.daftar(() => handleClick("Daftar"))}
+            {/* Tombol Masuk yang mengarah ke halaman login */}
+            {Buttons.login(handleLoginClick)}
+
+            {/* Tombol Daftar yang mengarah ke halaman daftar */}
+            {Buttons.daftar(handleRegisterClick)}
           </div>
         </div>
       )}

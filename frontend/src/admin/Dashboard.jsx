@@ -1,6 +1,6 @@
 import React from "react";
 import Chart from "../components/Chart";
-import ManajemenPembayaran from "../admin/ManajemenPembayaran ";
+import ManajemenPembayaran from "../admin/ManajemenPembayaran";
 import SidebarAdmin from "../components/SidebarAdmin";
 import { HeaderAdmin } from "../components/HeaderAdmin";
 
