@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import RoomImage from '../assets/form.png';
 import { Link, useNavigate } from "react-router-dom";
 import { Buttons } from "../components/Button";
+import axios from "axios";
 
 // Komponen ToggleSwitch
 
@@ -17,15 +18,44 @@ const LoginForm = () => {
 
   const handleCheckboxChange = () => setIsChecked(!isChecked); // toggle checkbox state
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Simulasi login sukses (logika autentikasi bisa ditambahkan)
-    if (email === "admintitipin@gmail.com" && password === "password123") {
-      alert("Login berhasil!");
-      navigate("register"); // Arahkan ke halaman notifikasi
-    } else {
-      alert("Login gagal! Periksa email dan password Anda.");
+  
+    try {
+      // Tentukan endpoint berdasarkan email atau logika lainnya
+      let endpoint = email.includes('admin') ? 'http://localhost:3000/api/admin/login' : 'http://localhost:3000/api/user/login';
+  
+      // Kirim permintaan login ke server
+      const response = await axios.post(endpoint, {
+        email,
+        password,
+      });
+  
+      console.log("Response data:", response.data);
+  
+      if (response.status === 200) {
+        // Ambil token dan role dari response
+        const token = response.data.data.token;
+        const role = response.data.data.role;
+  
+        // Menyimpan token dan role ke localStorage
+        localStorage.setItem('userToken', token);
+        localStorage.setItem('role', role);  // Menyimpan role (user/admin)
+  
+        alert("Login berhasil!");
+  
+        // Arahkan pengguna ke dashboard yang sesuai berdasarkan role
+        if (role === 'admin') {
+          navigate("/admin/dashboard");  // Jika admin, arahkan ke dashboard admin
+        } else if (role === 'user') {
+          navigate("/user/dashboard");  // Jika user, arahkan ke dashboard pengguna
+        }
+      } else {
+        alert("Login gagal! Periksa email dan password Anda.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Terjadi kesalahan saat login. Silakan coba lagi.");
     }
   };
 
