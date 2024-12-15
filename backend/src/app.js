@@ -1,8 +1,10 @@
 const express = require("express");
-const mongoose = require("mongoose");
+
+const connectDB = require('./config/db');
 const dotenv = require("dotenv");
 const cors = require("cors");
-const errorHandler = require("./middleware/errorHandler");
+
+const errorHandler = require('./middleware/errorHandler'); 
 
 dotenv.config();
 
@@ -34,6 +36,7 @@ app.use("/api/user/notifications", notifikasiRoutesUser);
 
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
+
 
 // Koneksi ke MongoDB
 connectDB();
