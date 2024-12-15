@@ -1,31 +1,40 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  user_id: { type: String, required: true, unique: true },
-  nama: { type: String, required: true, trim: true },
+  user_id: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    required: true, 
+    unique: true, 
+    default: () => new mongoose.Types.ObjectId()  // Pastikan user_id dihasilkan otomatis
+  },
+  name: { type: String, required: true, trim: true },
   email: { 
     type: String, 
     required: true, 
     unique: true, 
     match: [/.+\@.+\..+/, 'Email tidak valid'] 
   },
-  nomor_kontak: { 
+  phone: { 
     type: String, 
     match: [/^\d{10,15}$/, 'Nomor kontak harus berupa angka dan antara 10-15 digit'] 
   },
-  social_media: { type: String, trim: true },
-  password: { type: String, required: true, minlength: 6 }
+  password: { type: String, required: true, minlength: 6 },
+  role: { 
+    type: String, 
+    enum: ['user'], // User hanya memiliki role user
+    default: 'user' 
+  } // Menambahkan role dengan nilai default user
 }, {
   timestamps: true,
   toJSON: {
     transform(doc, ret) {
-      delete ret.password;
-      delete ret.__v;
+      delete ret.password; // Menghapus password dari respon
+      delete ret.__v;      // Menghapus versi dokument Mongoose
     }
   },
   toObject: { 
     transform(doc, ret) {
-      delete ret.password;
+      delete ret.password; // Sama seperti `toJSON`, jika digunakan
       delete ret.__v;
     }
   }
