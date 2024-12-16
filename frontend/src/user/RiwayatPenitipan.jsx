@@ -117,13 +117,14 @@ const RiwayatPenitipan = () => {
                         <span className="font-semibold text-gray-800">
                           Berat Barang: {""}
                         </span>
-                        {item.barang_id?.berat || "Data tidak tersedia"}
+                        {item.barang_id?.jumlah_barang || "Data tidak tersedia"}
                       </div>
                       <div>
                         <span className="font-semibold text-gray-800">
                           Deskripsi: {""}
                         </span>
-                        {item.barang_id?.deskripsi || "Data tidak tersedia"}{" "}
+                        {item.barang_id?.deskripsi_barang ||
+                          "Data tidak tersedia"}{" "}
                       </div>
                       <div>
                         <span className="font-semibold text-gray-800">
