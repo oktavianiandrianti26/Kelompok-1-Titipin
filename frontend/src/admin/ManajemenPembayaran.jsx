@@ -98,7 +98,7 @@ const ManajemenPembayaran = ({ showHeader = true, showSidebar = true }) => {
                           />
                           <div>
                             <p className="font-semibold text-gray-800">
-                              {item.user_id?.nama || "Nama tidak tersedia"}
+                              {item.user_id?.name || "Nama tidak tersedia"}
                             </p>
                             <p className="text-gray-700">
                               {item.user_id?.email || "Email tidak tersedia"}

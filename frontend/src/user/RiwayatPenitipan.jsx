@@ -14,7 +14,9 @@ const RiwayatPenitipan = () => {
     const fetchTransactionHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/user/riwayat/675b4b9840b0c8bb139cfc08`
+          `http://localhost:3000/api/user/riwayat/${localStorage.getItem(
+            "userId"
+          )}`
         );
         setTransactions(response.data);
       } catch (err) {
@@ -29,10 +31,13 @@ const RiwayatPenitipan = () => {
     try {
       const ulasan = review[transactionId];
       if (!ulasan) return;
-          // Ambil data riwayat transaksi berdasarkan transactionId dari API
-      await axios.put(`http://localhost:3000/api/user/riwayat/${transactionId}`, {
-        ulasan,
-      });
+      // Ambil data riwayat transaksi berdasarkan transactionId dari API
+      await axios.put(
+        `http://localhost:3000/api/user/riwayat/${transactionId}`,
+        {
+          ulasan,
+        }
+      );
 
       alert("Ulasan berhasil dikirim!");
       setTransactions((prev) =>
@@ -71,11 +76,15 @@ const RiwayatPenitipan = () => {
                 </tr>
                 {/* Header Kolom */}
                 <tr className="bg-gray-50 text-gray-800">
-                  <th className="p-3 border-l border-emerald-500 text-left">Nomor</th>
+                  <th className="p-3 border-l border-emerald-500 text-left">
+                    Nomor
+                  </th>
                   <th className="p-3 text-left">Tanggal</th>
                   <th className="p-3 text-left">Barang</th>
                   <th className="p-3 text-left">Total</th>
-                  <th className="p-3 border-r border-emerald-500 text-left">Ulasan</th>
+                  <th className="p-3 border-r border-emerald-500 text-left">
+                    Ulasan
+                  </th>
                 </tr>
                 <tr>
                   <td colSpan="5">
@@ -92,7 +101,9 @@ const RiwayatPenitipan = () => {
                     } text-gray-800 border-b border-emerald-500`}
                   >
                     {/* Nomor */}
-                    <td className="p-3 border-l border-emerald-500">{item._id}</td>
+                    <td className="p-3 border-l border-emerald-500">
+                      {item._id}
+                    </td>
                     {/* Tanggal */}
                     <td className="p-3">
                       <span className="bg-emerald-100 px-3 py-1 rounded-md font-semibold">

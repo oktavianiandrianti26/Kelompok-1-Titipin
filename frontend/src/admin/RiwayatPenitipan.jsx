@@ -88,7 +88,7 @@ const RiwayatPenitipan = () => {
                         />
                         <div>
                           <p className="font-semibold text-black-800">
-                            {item.user_id?.nama || "Data tidak tersedia"}
+                            {item.user_id?.name || "Data tidak tersedia"}
                           </p>
                           <p className="text-gray-700">
                             {item.user_id?.email || "Data tidak tersedia"}
@@ -100,12 +100,13 @@ const RiwayatPenitipan = () => {
                       <span className="font-semibold text-gray-800">
                         Berat Barang:{" "}
                       </span>
-                      {item.barang_id?.berat || "Data tidak tersedia"}
+                      {item.barang_id?.jumlah_barang || "Data tidak tersedia"}
                       <br />
                       <span className="font-semibold text-gray-800">
                         Deskripsi:{" "}
                       </span>
-                      {item.barang_id?.deskripsi || "Data tidak tersedia"}{" "}
+                      {item.barang_id?.deskripsi_barang ||
+                        "Data tidak tersedia"}{" "}
                       <br />
                       <span className="font-semibold text-gray-800">
                         Alamat:{" "}
