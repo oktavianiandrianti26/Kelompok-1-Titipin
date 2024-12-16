@@ -20,8 +20,8 @@ const UlasanPengguna = () => {
     fetchReviews();
   }, []);
 
-  // Fungsi untuk mengirim balasan ke backend
-  const handleReply = async (id) => {
+  // Fungsi untuk mengirim balasan dan notifikasi
+  const handleReplyAndNotify = async (id, userId, ulasan) => {
     const balasanTextarea = document.getElementById(`balasan-${id}`); // Ambil elemen textarea
     const balasan = balasanTextarea.value; // Ambil nilai balasan
 
@@ -31,8 +31,27 @@ const UlasanPengguna = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/admin/ulasan/${id}`, { balasan });
-      alert(response.data.message); // Menampilkan pesan dari server
+      // Kirim balasan ke backend
+      const replyResponse = await axios.put(`http://localhost:3000/api/admin/ulasan/${id}`, { balasan });
+      console.log(replyResponse.data.message);
+
+      // Kirim notifikasi ke backend
+      const notificationPayload = {
+        balasan,
+        ulasan,
+        user_id: userId,
+      };
+      const notifyResponse = await axios.post(
+        `http://localhost:3000/api/user/notifications/push-notifications`,
+        notificationPayload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log(notifyResponse.data.message);
+
+      // Tampilkan pesan sukses
+      alert("Balasan dan notifikasi berhasil dikirim.");
 
       // Kosongkan textarea setelah berhasil
       balasanTextarea.value = "";
@@ -40,34 +59,10 @@ const UlasanPengguna = () => {
       // Ambil ulasan lagi untuk memperbarui tampilan
       fetchReviews();
     } catch (err) {
-      console.error("Error replying to review:", err);
+      console.error("Error replying or sending notification:", err);
+      alert("Terjadi kesalahan saat mengirim balasan atau notifikasi.");
     }
   };
-
-  // Fungsi untuk mengabaikan ulasan (dummy)
-  const handleIgnore = (id) => {
-    console.log(`Review ID: ${id} ignored.`);
-  };
-
-  // Fungsi untuk mengirim notifikasi
-  async function handleSendNotification(payload) {
-    try {
-      console.log(payload);
-      const response = await axios.post(
-        `http://localhost:3000/api/user/notifications/push-notifications`,
-        payload,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      alert("Notifikasi berhasil dikirim");
-
-      // Perbarui ulasan setelah berhasil
-      fetchReviews();
-    } catch (err) {
-      console.error("Error sending notification:", err);
-    }
-  }
 
   return (
     <div className="flex h-screen">
@@ -96,7 +91,7 @@ const UlasanPengguna = () => {
 
                 {/* Ulasan dan Balasan */}
                 <p className="mb-4 text-gray-600">Ulasan: {review.ulasan}</p>
-                <p className="mb-4 text-gray-600">Balasan: {review.balasan}</p>
+                <p className="mb-4 text-gray-600">Balasan: {review.balasan || "Belum ada balasan"}</p>
 
                 {/* Textarea untuk Balasan */}
                 <textarea
@@ -107,24 +102,14 @@ const UlasanPengguna = () => {
                 />
 
                 {/* Tombol Aksi */}
-                <div className="flex justify-between space-x-2">
-                  <button
-                    onClick={() => handleReply(review._id)} // Kirim balasan
-                    className="flex-1 bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition"
-                  >
-                    Kirim
-                  </button>
+                <div className="flex justify-end">
                   <button
                     onClick={() =>
-                      handleSendNotification({
-                        balasan: review.balasan,
-                        ulasan: review.ulasan,
-                        user_id: review.user_id._id,
-                      })
+                      handleReplyAndNotify(review._id, review.user_id._id, review.ulasan)
                     }
-                    className="flex-1 bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                    className="w-full bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition"
                   >
-                    Kirim Notifikasi
+                    Kirim Balasan dan Notifikasi
                   </button>
                 </div>
               </div>
