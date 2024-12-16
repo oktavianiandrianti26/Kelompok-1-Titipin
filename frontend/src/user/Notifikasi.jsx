@@ -9,34 +9,16 @@ const Notifikasi = () => {
     // Fungsi untuk mengambil notifikasi dari API
     const fetchNotifikasi = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/user/notifications/get-notifications");
+        const response = await fetch("http://localhost:3000/api/user/notifications/get-notifications",{
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("userToken")}`, // Menambahkan token di header
+          },
+        });
         const data = await response.json();
 
         if (response.ok) {
           setNotifikasi(data.notifications);
-        } else {
-          alert(data.message);
-        }
-      } catch (error) {
-        console.error(error);
-        alert("Terjadi kesalahan saat mengambil notifikasi.");
-      }
-    };
-
-    fetchNotifikasi(); // Panggil fungsi saat komponen dimuat
-  }, []);
-
-
-  useEffect(() => {
-    // Fungsi untuk mengambil notifikasi dari API
-    const fetchNotifikasi = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/user/notifications/get-notifications");
-        const data = await response.json();
-
-        if (response.ok) {
-          setNotifikasi(data.notifications);
-          console.log(data)
         } else {
           alert(data.message);
         }
@@ -71,7 +53,7 @@ const Notifikasi = () => {
                 <th className="py-2 border-b border-green-500">Tanggal</th>
                 <th className="py-2 border-b border-green-500">Balasan</th>
                 <th className="py-2 border-b border-green-500">Ulasan</th>
-                <th className="py-2 border-b border-green-500">Pesan</th>
+                {/* <th className="py-2 border-b border-green-500">Pesan</th> */}
               </tr>
               </thead>
               <tbody>
@@ -87,7 +69,7 @@ const Notifikasi = () => {
 
                     <td className="py-2 border-b border-green-500">{notif.ulasan}</td>
 
-                    <td className="py-2 border-b border-green-500">{notif.message}</td>
+                    {/* <td className="py-2 border-b border-green-500">{notif.message}</td> */}
                   </tr>
                 ))
               ) : (
