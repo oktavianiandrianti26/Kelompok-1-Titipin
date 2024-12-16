@@ -54,7 +54,12 @@ const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: 'Password salah' });
     }
 
-    const token = jwt.sign({ adminId: admin._id, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    let token = admin.token;
+    if (!token) {
+      token = jwt.sign({ adminId: admin._id, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+      admin.token = token; 
+      await admin.save();
+    }
 
     res.status(200).json({
       success: true,

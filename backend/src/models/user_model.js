@@ -23,7 +23,8 @@ const UserSchema = new mongoose.Schema({
     type: String, 
     enum: ['user'], // User hanya memiliki role user
     default: 'user' 
-  } // Menambahkan role dengan nilai default user
+  }, // Menambahkan role dengan nilai default user
+  token: { type: String }
 }, {
   timestamps: true,
   toJSON: {

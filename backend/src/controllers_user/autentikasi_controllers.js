@@ -63,7 +63,12 @@ const login = async (req, res) => {
       return ResponseAPI.error(res, 'Email atau password salah', 400);
     }
 
-    const token = jwt.sign({ user_id: user._id, role: 'user' }, jwtSecret, { expiresIn: '1d' });
+    let token = user.token;
+    if (!token) {
+      token = jwt.sign({ user_id: user._id, role: 'user' }, jwtSecret, { expiresIn: '1d' });
+      user.token = token; // Simpan token di database
+      await user.save();
+    }
 
     return ResponseAPI.success(
       res,
