@@ -41,6 +41,7 @@ const LoginForm = () => {
         // Menyimpan token dan role ke localStorage
         localStorage.setItem('userToken', token);
         localStorage.setItem('role', role);  // Menyimpan role (user/admin)
+        localStorage.setItem('userEmail', email); 
   
         alert("Login berhasil!");
   
