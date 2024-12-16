@@ -12,7 +12,8 @@ const AdminSchema = new mongoose.Schema({
     type: String, 
     enum: ['admin'], // Admin hanya memiliki satu role
     default: 'admin' 
-  } // Menambahkan role dengan nilai default admin
+  }, // Menambahkan role dengan nilai default admin
+  token: { type: String }
 }, {
   timestamps: true,
   toJSON: {
