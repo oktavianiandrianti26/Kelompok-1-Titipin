@@ -87,7 +87,7 @@ const UlasanPengguna = () => {
                 {/* Informasi Pengguna */}
                 <div className="mb-2">
                   <p className="font-medium text-gray-700">
-                    {review.user_id?.nama || "N/A"}
+                    {review.user_id?.name || "N/A"}
                   </p>
                   <p className="text-sm text-gray-500">
                     {review.user_id?.email || "N/A"}

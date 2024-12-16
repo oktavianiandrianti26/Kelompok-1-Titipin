@@ -63,7 +63,12 @@ const login = async (req, res) => {
       return ResponseAPI.error(res, 'Email atau password salah', 400);
     }
 
-    const token = jwt.sign({ user_id: user._id, role: 'user' }, jwtSecret, { expiresIn: '1d' });
+    let token = user.token;
+    if (!token) {
+      token = jwt.sign({ user_id: user._id, role: 'user' }, jwtSecret, { expiresIn: '1d' });
+      user.token = token; // Simpan token di database
+      await user.save();
+    }
 
     return ResponseAPI.success(
       res,
@@ -126,9 +131,20 @@ const editProfile = async (req, res) => {
   }
 };
 
+// Mendapatkan semua pengguna
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find(); // Mendapatkan semua pengguna
+    res.json({ data: users });
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal mengambil data pengguna', error: err });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
   editProfile,
+  getUsers,
 };
