@@ -18,7 +18,10 @@ const PengaturanNotifikasi = () => {
     try {
       const response = await fetch("http://localhost:3000/api/notifications/send-notification", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("userToken")}`, // Menambahkan token di header
+        },
         body: JSON.stringify({
           senderEmail: "titipin.services@gmail.com",
           senderPassword: "cucl oxfi mgsn rsaq",
