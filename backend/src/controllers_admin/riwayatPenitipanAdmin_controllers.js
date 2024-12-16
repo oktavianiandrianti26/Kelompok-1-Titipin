@@ -11,8 +11,8 @@ const getAllTransactions = async (req, res) => {
   try {
     //Cek riwayat pembayaran
     const transactions = await Transaction.find({})
-      .populate("user_id", "user_id nama email")
-      .populate("barang_id", "id_barang berat deskripsi")
+      .populate("user_id", "user_id name email")
+      .populate("barang_id", "id_barang jumlah_barang deskripsi_barang")
       .populate("warehouse_id", "limit_jarak link_gmap")
       .exec();
     if (!transactions || transactions.length === 0) {

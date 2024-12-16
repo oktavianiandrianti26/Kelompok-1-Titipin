@@ -16,7 +16,7 @@ const getUserTransactionHistory = async (req, res) => {
     }
     // Cek riwayat transaksi by ID
     const transactions = await Transaction.find({ user_id: userId })
-      .populate("barang_id", "id_barang berat deskripsi")
+      .populate("barang_id", "id_barang jumlah_barang deskripsi_barang")
       .populate("warehouse_id", "limit_jarak link_gmap")
       .exec();
     // jika transaksi tidak ada

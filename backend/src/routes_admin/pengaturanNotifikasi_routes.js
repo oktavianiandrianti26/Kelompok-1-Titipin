@@ -4,4 +4,4 @@ const { sendNotification } = require("../controllers_admin/pengaturanNotifikasi_
 
 router.post("/send-notification", sendNotification);
 
-module.exports = router;
+module.exports = router

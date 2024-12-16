@@ -15,7 +15,7 @@ const getAllPayments = async (req, res) => {
         "payment_id",
         "tanggal_pembayaran status_pembayaran jumlah_bayar"
       )
-      .populate("user_id", "user_id nama email")
+      .populate("user_id", "user_id name email")
       .exec();
     if (!payments || payments.length === 0) {
       // jika pembayaran tidak ada
