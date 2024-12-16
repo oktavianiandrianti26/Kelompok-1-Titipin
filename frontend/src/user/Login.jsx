@@ -40,11 +40,13 @@ const LoginForm = () => {
         const role = response.data.data.role;
         const userId = response.data.data.user.id;
 
+
         // Menyimpan token dan role ke localStorage
         localStorage.setItem("userToken", token);
         localStorage.setItem("role", role); // Menyimpan role (user/admin)
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userId", userId);
+
 
         alert("Login berhasil!");
 

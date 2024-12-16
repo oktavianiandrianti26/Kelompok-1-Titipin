@@ -66,7 +66,7 @@ const login = async (req, res) => {
     let token = user.token;
     if (!token) {
       token = jwt.sign({ user_id: user._id, role: 'user' }, jwtSecret, { expiresIn: '1d' });
-      user.token = token; // Simpan token di database
+      user.token = token; 
       await user.save();
     }
 
