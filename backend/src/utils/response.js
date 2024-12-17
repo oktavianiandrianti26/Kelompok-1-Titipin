@@ -1,47 +1,49 @@
 class ResponseAPI {
-    // Method untuk response sukses
-    static success(res, data = null, message = 'Success', statusCode = 200) {
-        return res.status(statusCode).json({
-            success: true,
-            message,
-            data
-        });
+    static success(res, data, message = 'Request successful') {
+      return res.status(200).json({
+        status: 'success',
+        message,
+        data,
+      });
     }
-
-    // Method untuk response error
-    static error(res, message = 'Error', statusCode = 400, errors = null) {
-        return res.status(statusCode).json({
-            success: false,
-            message,
-            errors
-        });
+  
+    static created(res, data, message = 'Resource created successfully') {
+      return res.status(201).json({
+        status: 'success',
+        message,
+        data,
+      });
     }
-
-    // Method untuk response unauthorized
+  
+    static badRequest(res, message = 'Bad Request') {
+      return res.status(400).json({
+        status: 'error',
+        message,
+      });
+    }
+  
     static unauthorized(res, message = 'Unauthorized') {
-        return this.error(res, message, 401);
+      return res.status(401).json({
+        status: 'error',
+        message,
+      });
     }
-
-    // Method untuk response forbidden
-    static forbidden(res, message = 'Forbidden') {
-        return this.error(res, message, 403);
-    }
-
-    // Method untuk response not found
+  
     static notFound(res, message = 'Not Found') {
-        return this.error(res, message, 404);
+      return res.status(404).json({
+        status: 'error',
+        message,
+      });
     }
-
-    // Method untuk response internal server error
-    static serverError(res, error = null) {
-        console.error(error);  // Log error ke console
-        return this.error(
-            res,
-            'Internal Server Error',
-            500,
-            process.env.NODE_ENV === 'development' ? error?.message : 'Something went wrong'
-        );
+  
+    static internalServerError(res, error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Internal Server Error',
+        error,
+      });
     }
-}
-
-module.exports = ResponseAPI;
+  }
+  
+  module.exports = ResponseAPI;
+  
