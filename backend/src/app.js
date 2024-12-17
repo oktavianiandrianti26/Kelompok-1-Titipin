@@ -27,6 +27,7 @@ const notificationRoutes = require("./routes_admin/pengaturanNotifikasi_routes")
 const notifikasiRoutesUser = require("./routes_user/notifikasi_routes.js");
 const userRoutes = require("./routes_user/autentikasi_routes");
 const adminRoutes = require("./routes_admin/autentikasi_routes");
+const feedbackRoutes = require('./routes_admin/feedback_routes');
 
 // Menambahkan rute ke aplikasi
 app.use("/api/user", riwayatUserRoutes, paymentUserRoutes);
@@ -37,6 +38,7 @@ app.use("/api/admin", ulasanAdminRoutes);
 
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 
 // Koneksi ke MongoDB
