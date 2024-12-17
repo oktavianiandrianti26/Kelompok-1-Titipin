@@ -1,11 +1,63 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import profilImage from '../assets/profil.png';
 import { Link } from "react-router-dom"; // Import Link di sini
+import axios from "axios";
 
 const SidebarContext = createContext();
 
 export function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true);
+  const [profileName, setProfileName] = useState(""); // State untuk nama pengguna
+  const [role, setRole] = useState(""); // State untuk role
+
+  // Ambil role dari localStorage dan set ke state role
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role"); // Mengambil role dari localStorage
+    if (storedRole) {
+      setRole(storedRole); // Menyimpan role ke state
+    } else {
+      console.error("Role tidak ditemukan di localStorage");
+      // Bisa redirect ke halaman login jika role tidak ditemukan
+    }
+  }, []);
+
+  // Ambil data nama berdasarkan role (admin/user)
+  useEffect(() => {
+    if (!role) return; // Role harus ada sebelum memanggil API
+  
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("userToken");
+  
+        if (!token) {
+          console.error("Token tidak ditemukan.");
+          return;
+        }
+  
+        const endpoint = role === "admin" ? "/api/admin/profile" : "http://localhost:3000/api/user/profile"; // Gunakan URL lengkap untuk user
+  
+        const response = await axios.get(endpoint, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        console.log("Respons API:", response.data);
+  
+        // Set nama berdasarkan role
+        if (role === "admin") {
+          setProfileName("Admin Titipin");
+        } else if (role === "user" && response.data.success && response.data.data?.name) {
+          setProfileName(response.data.data.name); // Ambil nama user dari respons
+        } else {
+          console.error("Nama tidak ditemukan dalam respons API.");
+        }
+      } catch (error) {
+        console.error("Gagal memanggil API profil:", error);
+      }
+    };
+  
+    fetchProfile();
+  }, [role]);
 
   return (
     <aside className="h-min-screen">
@@ -35,16 +87,16 @@ export function Sidebar({ children }) {
         </SidebarContext.Provider>
         <div className="border-t flex p-2 items-center justify-center">
           <img
-            src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109"
+            src={profilImage}
             className="h-8 w-8 rounded-full"
-            alt=""
+            alt="Profile"
           />
           <div
-            className={`overflow-hidden transition-all ${
-              expanded ? "w-52 ml-3" : "w-0"
-            }`}
+            className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}
           >
-            <h4 className="text-white text-xs font-semibold">Andi Pratama</h4>
+            <h4 className="text-white text-xs font-semibold">
+              {profileName } 
+            </h4>
           </div>
         </div>
       </nav>
