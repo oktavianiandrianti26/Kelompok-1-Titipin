@@ -6,6 +6,15 @@ class ResponseAPI {
         data,
       });
     }
+    
+  // Method untuk response error
+    static error(res, message = 'Error', statusCode = 400, errors = null) {
+        return res.status(statusCode).json({
+            success: false,
+            message,
+            errors
+        });
+    }
   
     static created(res, data, message = 'Resource created successfully') {
       return res.status(201).json({
