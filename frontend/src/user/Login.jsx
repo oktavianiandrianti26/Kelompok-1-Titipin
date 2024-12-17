@@ -35,18 +35,21 @@ const LoginForm = () => {
       console.log("Response data:", response.data);
 
       if (response.status === 200) {
-        // Ambil token dan role dari response
         const token = response.data.data.token;
         const role = response.data.data.role;
-        const userId = role === 'user' ? response.data.data.user.id : null;
-
-
-        // Menyimpan token dan role ke localStorage
-        localStorage.setItem("userToken", token);
-        localStorage.setItem("role", role); // Menyimpan role (user/admin)
-        localStorage.setItem("userEmail", email);
-        if (userId) localStorage.setItem('userId', userId);
-
+      
+        // Menyimpan data ke localStorage berdasarkan role
+        if (role === "admin") {
+          localStorage.setItem("adminToken", token); // Menyimpan token admin
+          localStorage.setItem("role", role); // Menyimpan role (admin)
+          localStorage.setItem("adminEmail", email); // Menyimpan email admin
+        } else if (role === "user") {
+          const userId = response.data.data.user.id; // Dapatkan userId untuk user
+          localStorage.setItem("userToken", token); // Menyimpan token user
+          localStorage.setItem("role", role); // Menyimpan role (user)
+          localStorage.setItem("userEmail", email); // Menyimpan email user
+          localStorage.setItem("userId", userId); // Menyimpan userId
+        }
 
         alert("Login berhasil!");
 
