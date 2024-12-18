@@ -149,7 +149,7 @@ const LoginForm = () => {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="admintitipin@gmail.com"
+                placeholder="masukkan email anda"
                 className="w-full px-4 py-2 mt-1 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 value={email}
                 onChange={handleEmailChange}
@@ -168,7 +168,7 @@ const LoginForm = () => {
                 type="password"
                 id="password"
                 name="password"
-                placeholder="***************"
+                placeholder="masukkan password anda"
                 className="w-full px-4 py-2 mt-1 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 value={password}
                 onChange={handlePasswordChange}
