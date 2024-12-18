@@ -7,30 +7,32 @@ const ResponseAPI = require('../utils/response');
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
-        
         if (!token) {
-            return ResponseAPI.unauthorized(res, 'Authentication required');
+            return ResponseAPI.unauthorized(res, 'Token tidak ditemukan. Silakan login.');
         }
 
         const decoded = jwt.verify(token, jwtSecret);
         console.log('Decoded Token:', decoded);
-        let user;
 
-        // Cek apakah user atau admin
+        let user;
         if (decoded.role === 'admin') {
-            user = await Admin.findById(decoded.user_id);
+            user = await Admin.findById(decoded.adminId);
         } else {
             user = await User.findById(decoded.user_id);
         }
 
         if (!user) {
-            return ResponseAPI.unauthorized(res, 'User not found');
+            return ResponseAPI.unauthorized(res, 'User tidak ditemukan.');
         }
 
-        req.user = user; // Menyimpan user ke request
-        next(); // Melanjutkan ke middleware atau controller berikutnya
+        req.user = { user_id: user._id, role: decoded.role };
+        next();
     } catch (error) {
-        return ResponseAPI.unauthorized(res, 'Invalid token');
+        console.error('Auth Middleware Error:', error);
+        if (error.name === 'TokenExpiredError') {
+            return ResponseAPI.unauthorized(res, 'Token telah kedaluwarsa. Silakan login ulang.');
+        }
+        return ResponseAPI.unauthorized(res, 'Token tidak valid.');
     }
 };
 
