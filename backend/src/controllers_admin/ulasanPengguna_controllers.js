@@ -1,11 +1,11 @@
-const Transaction = require("../models/transaction_model");
+const Barang = require("../models/barang_model");
 const User = require("../models/user_model");
 
 // Fungsi untuk mendapatkan semua ulasan pengguna
 const getAllUserReviews = async (req, res) => {
   try {
-    const reviews = await Transaction.find({ ulasan: { $exists: true, $ne: "" } })
-      .populate("user_id", "email name")  // Menambahkan nama dan email user
+    const reviews = await Barang.find({ ulasan: { $exists: true, $ne: "" } })
+      .populate("user_id", "email name") // Menambahkan nama dan email user
       .select("ulasan balasan");
 
     if (!reviews || reviews.length === 0) {
@@ -21,11 +21,11 @@ const getAllUserReviews = async (req, res) => {
 
 // Fungsi untuk membalas ulasan pengguna
 const replyToReview = async (req, res) => {
-  const { id } = req.params;  // Mendapatkan ID transaksi dari parameter
-  const { balasan } = req.body;  // Mendapatkan balasan dari body request
-console.log(id)
+  const { id } = req.params; // Mendapatkan ID transaksi dari parameter
+  const { balasan } = req.body; // Mendapatkan balasan dari body request
+  console.log(id);
   try {
-    const review = await Transaction.findById(id);
+    const review = await Barang.findById(id);
 
     if (!review) {
       return res.status(404).json({ message: "Ulasan tidak ditemukan." });

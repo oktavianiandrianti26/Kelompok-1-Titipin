@@ -13,8 +13,6 @@ const RiwayatPenitipan = () => {
       try {
         const response = await axios.get(
           "http://localhost:3000/api/admin/riwayat"
-          // Jika diperlukan otentikasi, Anda dapat menambahkan headers, contoh:
-          // { headers: { Authorization: `Bearer ${your_token}` } }
         );
         setTransactions(response.data);
       } catch (err) {
@@ -98,24 +96,18 @@ const RiwayatPenitipan = () => {
                     </td>
                     <td className="p-3 whitespace-pre-line">
                       <span className="font-semibold text-gray-800">
-                        Berat Barang:{" "}
+                        Jumlag Barang:{" "}
                       </span>
-                      {item.barang_id?.jumlah_barang || "Data tidak tersedia"}
+                      {item.jumlah_barang || "Data tidak tersedia"}
                       <br />
                       <span className="font-semibold text-gray-800">
                         Deskripsi:{" "}
                       </span>
-                      {item.barang_id?.deskripsi_barang ||
-                        "Data tidak tersedia"}{" "}
-                      <br />
-                      <span className="font-semibold text-gray-800">
-                        Alamat:{" "}
-                      </span>
-                      {item.titik_alamat || "Data tidak tersedia"}
+                      {item.deskripsi_barang || "Data tidak tersedia"} <br />
                     </td>
                     <td className="p-3 border-r border-emerald-500 whitespace-nowrap">
                       <span className="text-gray-800 px-3 py-1 rounded-md">
-                        {item.total_biaya || "Rp. 0"}
+                        {item.harga || "Rp. 0"}
                       </span>
                     </td>
                   </tr>

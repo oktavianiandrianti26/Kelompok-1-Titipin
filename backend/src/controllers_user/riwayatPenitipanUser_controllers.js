@@ -1,7 +1,5 @@
 const Admin = require("../models/admin_model");
 const Barang = require("../models/barang_model");
-const Feedback = require("../models/feedback_model");
-const Payment = require("../models/payment_model");
 const Transaction = require("../models/transaction_model");
 const User = require("../models/user_model");
 const Warehouse = require("../models/warehouse_model");
@@ -15,15 +13,15 @@ const getUserTransactionHistory = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     // Cek riwayat transaksi by ID
-    const transactions = await Transaction.find({ user_id: userId })
-      .populate("barang_id", "id_barang jumlah_barang deskripsi_barang")
-      .populate("warehouse_id", "limit_jarak link_gmap")
+    const barang = await Barang.find({ user_id: userId })
+      .populate("id_transaction", " jumlah_barang deskripsi_barang")
+
       .exec();
     // jika transaksi tidak ada
-    if (!transactions || transactions.length === 0) {
+    if (!barang || barang.length === 0) {
       return res.status(404).json({ message: "Tidak Ada Transaksi" });
     }
-    res.status(200).json(transactions);
+    res.status(200).json(barang);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -33,21 +31,19 @@ const getUserTransactionHistory = async (req, res) => {
 // Fungsi untuk memperbarui ulasan transaksi
 const updateUserTransactionReview = async (req, res) => {
   try {
-    const { transactionId } = req.params;
+    const { barangId } = req.params;
     const { ulasan } = req.body;
 
-    const transaction = await Transaction.findById(transactionId);
-    if (!transaction) {
+    const barang = await Barang.findById(barangId);
+    if (!barang) {
       return res.status(404).json({ message: "Transaksi tidak ditemukan" });
     }
 
     // Update ulasan
-    transaction.ulasan = ulasan;
-    await transaction.save();
+    barang.ulasan = ulasan;
+    await barang.save();
 
-    res
-      .status(200)
-      .json({ message: "Ulasan berhasil diperbarui", transaction });
+    res.status(200).json({ message: "Ulasan berhasil diperbarui", barang });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
