@@ -65,7 +65,7 @@ const UlasanPengguna = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-auto min-h-screen">
       {/* Sidebar */}
       <SidebarAdmin />
 
