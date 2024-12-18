@@ -13,6 +13,7 @@ const auth = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, jwtSecret);
+        console.log('Decoded Token:', decoded);
         let user;
 
         // Cek apakah user atau admin
