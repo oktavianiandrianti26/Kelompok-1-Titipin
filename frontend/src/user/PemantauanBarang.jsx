@@ -9,8 +9,6 @@ const PemantauanBarang = () => {
   const itemsPerPage = 4;
   const [error, setError] = useState(null);
 
-  
-
   // Mendapatkan token dari localStorage
   const token = localStorage.getItem("userToken");
 
@@ -29,14 +27,14 @@ const PemantauanBarang = () => {
           },
         });
 
-        
-
         setData(response.data.data);
-        console.log(response)
+        console.log(response);
       } catch (error) {
         // Penanganan error jika terjadi 401 Unauthorized
         if (error.response && error.response.status === 401) {
-          setError("Token tidak valid atau sesi sudah kedaluwarsa. Silakan login ulang.");
+          setError(
+            "Token tidak valid atau sesi sudah kedaluwarsa. Silakan login ulang."
+          );
         } else {
           setError("Terjadi kesalahan saat mengambil data.");
         }
@@ -55,9 +53,8 @@ const PemantauanBarang = () => {
     setCurrentPage(pageNumber);
   };
 
-  
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarUser />
       <div className="flex-grow flex flex-col">
         <div className="flex justify-between items-center p-0 bg-white">
@@ -95,14 +92,14 @@ const PemantauanBarang = () => {
                       >
                         <td className="p-3 border-l border-emerald-500 whitespace-pre-line">
                           <span className="font-semibold text-gray-800">
-                          jumlah_barang:
+                            jumlah_barang:
                           </span>{" "}
                           <span className="text-gray-700">
                             {item.jumlah_barang}
                           </span>
                           <br />
                           <span className="font-semibold text-gray-800">
-                          deskripsi:
+                            deskripsi:
                           </span>{" "}
                           <span className="text-gray-800">
                             {item.deskripsi_barang}
@@ -122,7 +119,11 @@ const PemantauanBarang = () => {
                       {[1, 2, 3].map((page) => (
                         <button
                           key={page}
-                          className={`w-8 h-8 ${currentPage === page ? "bg-emerald-700" : "bg-emerald-500"} text-white rounded-full`}
+                          className={`w-8 h-8 ${
+                            currentPage === page
+                              ? "bg-emerald-700"
+                              : "bg-emerald-500"
+                          } text-white rounded-full`}
                           onClick={() => handlePageChange(page)}
                         >
                           {page}

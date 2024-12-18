@@ -9,7 +9,9 @@ const UlasanPengguna = () => {
   // Fungsi untuk mengambil data ulasan
   const fetchReviews = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/admin/ulasan");
+      const response = await axios.get(
+        "http://localhost:3000/api/admin/ulasan"
+      );
       setReviews(response.data);
     } catch (err) {
       console.error("Error fetching reviews:", err);
@@ -32,7 +34,10 @@ const UlasanPengguna = () => {
 
     try {
       // Kirim balasan ke backend
-      const replyResponse = await axios.put(`http://localhost:3000/api/admin/ulasan/${id}`, { balasan });
+      const replyResponse = await axios.put(
+        `http://localhost:3000/api/admin/ulasan/${id}`,
+        { balasan }
+      );
       console.log(replyResponse.data.message);
 
       // Kirim notifikasi ke backend
@@ -65,7 +70,7 @@ const UlasanPengguna = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       <SidebarAdmin />
 
@@ -91,7 +96,9 @@ const UlasanPengguna = () => {
 
                 {/* Ulasan dan Balasan */}
                 <p className="mb-4 text-gray-600">Ulasan: {review.ulasan}</p>
-                <p className="mb-4 text-gray-600">Balasan: {review.balasan || "Belum ada balasan"}</p>
+                <p className="mb-4 text-gray-600">
+                  Balasan: {review.balasan || "Belum ada balasan"}
+                </p>
 
                 {/* Textarea untuk Balasan */}
                 <textarea
@@ -105,7 +112,11 @@ const UlasanPengguna = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={() =>
-                      handleReplyAndNotify(review._id, review.user_id._id, review.ulasan)
+                      handleReplyAndNotify(
+                        review._id,
+                        review.user_id._id,
+                        review.ulasan
+                      )
                     }
                     className="w-full bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition"
                   >

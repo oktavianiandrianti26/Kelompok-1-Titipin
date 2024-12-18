@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import { HeaderManajemenPengguna } from "../components/HeaderAdmin";
-import profilImage from '../assets/profil.png';
-import axios from 'axios';
+import profilImage from "../assets/profil.png";
+import axios from "axios";
 
 const ManajemenPengguna = () => {
-  const [users, setUsers] = useState([]);  // State untuk menyimpan data pengguna
+  const [users, setUsers] = useState([]); // State untuk menyimpan data pengguna
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -13,15 +13,17 @@ const ManajemenPengguna = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/user/users');
-        setUsers(response.data.data);  // Menyimpan data pengguna di state
+        const response = await axios.get(
+          "http://localhost:3000/api/user/users"
+        );
+        setUsers(response.data.data); // Menyimpan data pengguna di state
       } catch (error) {
-        console.error('Terjadi kesalahan saat mengambil data pengguna:', error);
+        console.error("Terjadi kesalahan saat mengambil data pengguna:", error);
       }
     };
 
-    fetchUsers();  // Memanggil fungsi untuk mengambil data pengguna
-  }, []);  // Efek ini hanya dijalankan sekali saat komponen pertama kali dimuat
+    fetchUsers(); // Memanggil fungsi untuk mengambil data pengguna
+  }, []); // Efek ini hanya dijalankan sekali saat komponen pertama kali dimuat
 
   const totalPages = Math.ceil(users.length / itemsPerPage);
 
@@ -38,7 +40,7 @@ const ManajemenPengguna = () => {
   const paginationRange = [1, 2, 3];
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarAdmin />
 
       <div className="flex-1 p-6">
@@ -69,8 +71,12 @@ const ManajemenPengguna = () => {
                           className="h-8 w-8 rounded-full"
                         />
                         <div>
-                          <span className="block font-semibold">{user.name}</span>
-                          <span className="block text-gray-500">{user.email}</span>
+                          <span className="block font-semibold">
+                            {user.name}
+                          </span>
+                          <span className="block text-gray-500">
+                            {user.email}
+                          </span>
                         </div>
                       </div>
                     </td>
@@ -86,7 +92,9 @@ const ManajemenPengguna = () => {
               {paginationRange.map((page) => (
                 <button
                   key={page}
-                  className={`w-8 h-8 ${currentPage === page ? "bg-emerald-700" : "bg-emerald-500"} text-white rounded-full`}
+                  className={`w-8 h-8 ${
+                    currentPage === page ? "bg-emerald-700" : "bg-emerald-500"
+                  } text-white rounded-full`}
                   onClick={() => handlePageChange(page)}
                 >
                   {page}

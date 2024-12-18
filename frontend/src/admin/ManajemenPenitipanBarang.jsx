@@ -16,12 +16,14 @@ const ManajemenPenitipanBarang = () => {
       }
       try {
         // Mengambil data transaksi dari API
-        const response = await axios.get("http://localhost:3000/api/transactions", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const response = await axios.get(
+          "http://localhost:3000/api/transactions",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         // Menyimpan data transaksi ke dalam state
         setDataPenitipan(response.data);
@@ -36,7 +38,7 @@ const ManajemenPenitipanBarang = () => {
   }, []); // Efek hanya dijalankan sekali saat komponen pertama kali dipasang
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       <SidebarAdmin />
 
@@ -57,9 +59,7 @@ const ManajemenPenitipanBarang = () => {
                     key={idx}
                     className="border rounded-lg p-4 flex flex-col justify-between"
                   >
-                    <h2 className="text-lg font-medium text-gray-600 mb-4">
-                      
-                    </h2>
+                    <h2 className="text-lg font-medium text-gray-600 mb-4"></h2>
                     <div className="border-b pb-4 mb-4 last:mb-0 last:border-b-0">
                       <p className="font-medium">{data.nama}</p>
                       <p className="text-gray-500 text-sm">{data.email}</p>
@@ -68,18 +68,18 @@ const ManajemenPenitipanBarang = () => {
                         kontak: {data.kontak}
                       </p>
                       <p className="text-gray-500 text-sm">
-                        Durasi : {data.duration.startDate} - {data.duration.endDate}
+                        Durasi : {data.duration.startDate} -{" "}
+                        {data.duration.endDate}
                       </p>
                       <p className="text-gray-500 text-sm">
-                        Alamat: {data. alamatPenjemputan}
+                        Alamat: {data.alamatPenjemputan}
                       </p>
                       <p className="text-gray-500 text-sm">
-                      jarak jemput: {data. jarak_jemput}
+                        jarak jemput: {data.jarak_jemput}
                       </p>
                       <p className="text-gray-500 text-sm">
-                      total biaya: {data. total_biaya_jemput}
+                        total biaya: {data.total_biaya_jemput}
                       </p>
-                      
                     </div>
                   </div>
                 ))}

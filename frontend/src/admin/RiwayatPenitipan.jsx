@@ -32,7 +32,7 @@ const RiwayatPenitipan = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarAdmin />
       <div className="flex-grow flex flex-col">
         {/* Header */}

@@ -1,15 +1,14 @@
 import React from "react";
 import SidebarUser from "../components/SidebarUser";
 import HeaderUser from "../components/HeaderUser";
-import { Buttons } from '../components/Button'; 
-import titipinImage from '../assets/titipin3.png';
+import { Buttons } from "../components/Button";
+import titipinImage from "../assets/titipin3.png";
 
 const Dashboard = () => {
-  const handleVisitClick = () => {;
-  };
+  const handleVisitClick = () => {};
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarUser />
 
       <div className="flex-1 bg-gray-100">
@@ -17,7 +16,7 @@ const Dashboard = () => {
 
         <div className="p-6">
           <img
-            src={titipinImage} 
+            src={titipinImage}
             alt="Ilustrasi Titipin"
             className="w-full h-80 object-cover rounded-lg mb-6"
           />
@@ -44,7 +43,7 @@ const Dashboard = () => {
             pun Anda butuhkan!
           </p>
 
-          {Buttons.kunjungiTitipin(handleVisitClick)} 
+          {Buttons.kunjungiTitipin(handleVisitClick)}
         </div>
       </div>
     </div>
