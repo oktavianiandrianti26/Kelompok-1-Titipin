@@ -1,30 +1,36 @@
 const mongoose = require("mongoose");
 
-const TransactionSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  warehouse_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Warehouse', required: true },
-  barang_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Barang', required: true },
-  titik_alamat: { type: String, required: true, trim: true },
-  titik_jemput: { type: String, required: true, trim: true },
-  biaya_jemput: { type: Number, required: true, min: 0 },
-  jarak_jemput: { type: Number, required: true, min: 0 },
-  total_biaya: { type: Number, required: true, min: 0 },
-  status: { 
-    type: String, 
-    enum: ['waiting payment', 'pickup ongoing', 'done'], 
-    required: true 
+const TransactionSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    id_barang: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: () => new mongoose.Types.ObjectId(),
+      unique: true,
+    },
+    nama: { type: String, required: true },
+    kontak: { type: Number, required: true },
+    duration: { type: Object, required: true }, // { startDate, endDate }
+    alamatPenjemputan: { type: String, required: true },
+    jarak_jemput: { type: Number, required: true },
+    total_biaya_jemput: { type: Number, required: true },
+    denda: { type: Number, default: 0, min: 0 },
+    ulasan: {
+      type: String,
+      default: null, // Default ulasan menjadi null
+    },
+    balasan: {
+      type: String, // Field untuk menyimpan balasan
+      default: "",
+    },
   },
-  denda: { type: Number, default: 0, min: 0 },
-  ulasan: {
-    type: String,
-    default: null, // Default ulasan menjadi null
-  },
-  balasan: {
-    type: String,  // Field untuk menyimpan balasan
-    default: "",
-  },
-}, {
-  timestamps: true
-});
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model('Transaction', TransactionSchema);
+module.exports = mongoose.model("Transaction", TransactionSchema);

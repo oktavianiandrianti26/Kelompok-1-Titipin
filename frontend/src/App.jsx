@@ -22,7 +22,6 @@ import Landing from "./landing/LandingPage";
 import EditProfile from "./user/EditProfile";
 import PemesananPenitipan from "./user/PemesananPenitipan";
 import PemantauanBarang from "./user/PemantauanBarang";
-import Checkout from "./user/Checkout";
 
 function App() {
   return (
@@ -32,7 +31,6 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login />} />
         {/* Midtrans Test Payment */}
-        <Route path="/checkout" element={<Checkout />} />
         {/* User */}
         <Route path="/register" element={<Register />} />
         <Route path="/user/dashboard" element={<DashboardUser />} />

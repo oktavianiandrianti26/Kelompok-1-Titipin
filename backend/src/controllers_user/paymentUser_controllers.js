@@ -10,7 +10,7 @@ const snap = new midtransClient.Snap({
 });
 
 exports.createPayment = async (req, res) => {
-  const { amount, email, phone, name, user_id } = req.body;
+  const { amount, phone, name, user_id } = req.body;
 
   // Validasi input
   if (!amount || amount <= 0) {
@@ -28,7 +28,6 @@ exports.createPayment = async (req, res) => {
         secure: true, // Aktifkan secure mode
       },
       customer_details: {
-        email: email || "customer@example.com", //example
         nama: name || "Costumer", //example
         phone: phone || "081234567890", //example
       },
