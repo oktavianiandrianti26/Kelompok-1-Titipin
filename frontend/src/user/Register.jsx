@@ -70,7 +70,7 @@ const RegisterPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full p-2 rounded bg-green-100"
-                placeholder="admintitipin"
+                placeholder="masukkan nama anda"
               />
             </div>
             <div className="mb-4">
@@ -80,7 +80,7 @@ const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-2 rounded bg-green-100"
-                placeholder="admintitipin@gmail.com"
+                placeholder="masukkan email anda"
               />
             </div>
             <div className="mb-4">
@@ -90,7 +90,7 @@ const RegisterPage = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full p-2 rounded bg-green-100"
-                placeholder="08111111000"
+                placeholder="masukkan nomor hp anda"
               />
             </div>
             <div className="mb-4">
@@ -100,7 +100,7 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 rounded bg-green-100"
-                placeholder="***************"
+                placeholder="masukkan password anda"
               />
             </div>
             <div className="mb-4">
@@ -110,7 +110,7 @@ const RegisterPage = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full p-2 rounded bg-green-100"
-                placeholder="***************"
+                placeholder="masukkan konfirmasi password anda"
               />
             </div>
             <div className="flex items-center mb-4">
