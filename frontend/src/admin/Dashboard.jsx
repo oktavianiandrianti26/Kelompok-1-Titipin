@@ -1,6 +1,6 @@
 import React from "react";
 import Chart from "../components/Chart";
-import ManajemenPembayaran from "../admin/ManajemenPembayaran ";
+import ManajemenPembayaran from "../admin/ManajemenPembayaran";
 import SidebarAdmin from "../components/SidebarAdmin";
 import { HeaderAdmin } from "../components/HeaderAdmin";
 
@@ -24,7 +24,7 @@ const jumlahBarangData = [
 
 function Dashboard() {
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar and main content */}
       <SidebarAdmin />
       <div className="p-8 flex flex-col w-full">

@@ -16,19 +16,22 @@ const PengaturanNotifikasi = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/notifications/send-notification", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("userToken")}`, // Menambahkan token di header
-        },
-        body: JSON.stringify({
-          senderEmail: "titipin.services@gmail.com",
-          senderPassword: "cucl oxfi mgsn rsaq",
-          recipients: pengguna,
-          message: pesan,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/notifications/send-notification",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`, // Menambahkan token di header
+          },
+          body: JSON.stringify({
+            senderEmail: "titipin.services@gmail.com",
+            senderPassword: "cucl oxfi mgsn rsaq",
+            recipients: pengguna,
+            message: pesan,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -50,7 +53,7 @@ const PengaturanNotifikasi = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarAdmin />
       <main className="flex-1 p-6">
         <HeaderPengirimanNotifikasi />
@@ -60,7 +63,9 @@ const PengaturanNotifikasi = () => {
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">Pengguna</label>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Pengguna
+              </label>
               <input
                 type="text"
                 value={pengguna}
@@ -70,7 +75,9 @@ const PengaturanNotifikasi = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 font-semibold mb-2">Pesan</label>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Pesan
+              </label>
               <textarea
                 rows="3"
                 value={pesan}

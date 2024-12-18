@@ -1,18 +1,42 @@
 const mongoose = require("mongoose");
 
-const BarangSchema = new mongoose.Schema({
-  id_barang: { type: String, required: true, unique: true },
-  id_user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  jenis_barang: { type: String, required: true, trim: true },
-  berat: { type: Number, required: true, min: 0 },
-  deskripsi: { type: String, trim: true },
-  status_barang: { 
-    type: String, 
-    enum: ['ready', 'in transit', 'delivered'], 
-    required: true 
+const BarangSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    id_barang: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: () => new mongoose.Types.ObjectId(),
+      unique: true,
+    },
+    id_transaction: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Transaction",
+    },
+    deskripsi_barang: { type: String, trim: true },
+    jumlah_barang: { type: Number, required: true }, // Ubah ke Number
+    harga: { type: Number, default: 0 }, // Harga akan dihitung
+    ulasan: {
+      type: String,
+      default: null, // Default ulasan menjadi null
+    },
+    balasan: {
+      type: String, // Field untuk menyimpan balasan
+      default: "",
+    },
+  },
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true
+);
+
+// Pre-save hook untuk menghitung harga otomatis
+BarangSchema.pre("save", function (next) {
+  this.harga = this.jumlah_barang * 5000;
+  next();
 });
 
-module.exports = mongoose.model('Barang', BarangSchema);
+module.exports = mongoose.model("Barang", BarangSchema);

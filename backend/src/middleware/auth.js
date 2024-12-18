@@ -13,13 +13,14 @@ const auth = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, jwtSecret);
+        console.log('Decoded Token:', decoded);
         let user;
 
         // Cek apakah user atau admin
         if (decoded.role === 'admin') {
-            user = await Admin.findById(decoded.id);
+            user = await Admin.findById(decoded.user_id);
         } else {
-            user = await User.findById(decoded.id);
+            user = await User.findById(decoded.user_id);
         }
 
         if (!user) {

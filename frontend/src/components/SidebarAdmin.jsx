@@ -17,16 +17,68 @@ function SidebarAdmin() {
   return (
     <>
       <Sidebar>
-        <SidebarItem icon={<FiGrid />} text="Dashboard" route="/" />
-        <SidebarItem icon={<FiUsers />} text="Pengguna" />
-        <SidebarItem icon={<FiPackage />} text="Penitipan" />
-        <SidebarItem icon={<FiCreditCard />} text="Pembayaran" />
-        <SidebarItem icon={<FiFile />} text="Riwayat" active />
-        <SidebarItem icon={<FiThumbsUp />} text="Ulasan" />
-        <SidebarItem icon={<FiBell />} text="Notifikasi" />
-        <SidebarItem icon={<FiMessageSquare />} text="Chat" />
-        <SidebarItem icon={<FiHome />} text="Beranda" beranda />
-        <SidebarItem icon={<FiLogOut />} text="Keluar" keluar />
+        <SidebarItem
+          icon={<FiGrid />}
+          text="Dashboard"
+          route="/admin/dashboard"
+          active={location.pathname === "/admin/dashboard"}
+        />
+        <SidebarItem
+          icon={<FiUsers />}
+          text="Pengguna"
+          route="/ManajemenPengguna"
+          active={location.pathname === "/ManajemenPengguna"}
+        />
+        <SidebarItem
+          icon={<FiPackage />}
+          text="Penitipan"
+          route="/ManajemenPenitipanBarang"
+          active={location.pathname === "/ManajemenPenitipanBarang"}
+        />
+        <SidebarItem
+          icon={<FiCreditCard />}
+          text="Pembayaran"
+          route="/ManajemenPembayaran"
+          active={location.pathname === "/ManajemenPembayaran"}
+        />
+        <SidebarItem
+          icon={<FiFile />}
+          text="Riwayat"
+          route="/admin/RiwayatPenitipan"
+          active={location.pathname === "/admin/RiwayatPenitipan"}
+        />
+        <SidebarItem
+          icon={<FiThumbsUp />}
+          text="Ulasan"
+          route="/UlasanPengguna"
+          active={location.pathname === "/UlasanPengguna"}
+        />
+        <SidebarItem
+          icon={<FiBell />}
+          text="Notifikasi"
+          route="/PengaturanNotifikasi"
+          active={location.pathname === "/PengaturanNotifikasi"}
+        />
+        <SidebarItem
+          icon={<FiMessageSquare />}
+          text="Chat"
+          route="/SupportChat"
+          active={location.pathname === "/SupportChat"}
+        />
+        <SidebarItem
+          icon={<FiHome />}
+          text="Beranda"
+          beranda
+          route="/admin/dashboard"
+          active={location.pathname === "/admin/dashboard"}
+        />
+        <SidebarItem
+          icon={<FiLogOut />}
+          text="Keluar"
+          keluar
+          route="/admin/dashboard"
+          active={location.pathname === "/admin/dashboard"}
+        />
       </Sidebar>
     </>
   );

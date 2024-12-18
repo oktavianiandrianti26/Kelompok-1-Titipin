@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import { HeaderManajemenPengguna } from "../components/HeaderAdmin";
+import profilImage from "../assets/profil.png";
+import axios from "axios";
 
 const ManajemenPengguna = () => {
-  const [users] = useState([
-    { id: 1, name: "Andi Pratama", email: "andipratama@gmail.com", phone: "08123456789" },
-    { id: 2, name: "Jonatan Malik", email: "malikjohn@gmail.com", phone: "0812345678910" },
-  ]);
-
+  const [users, setUsers] = useState([]); // State untuk menyimpan data pengguna
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+
+  // Mengambil data pengguna dari API saat komponen pertama kali dimuat
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/user/users"
+        );
+        setUsers(response.data.data); // Menyimpan data pengguna di state
+      } catch (error) {
+        console.error("Terjadi kesalahan saat mengambil data pengguna:", error);
+      }
+    };
+
+    fetchUsers(); // Memanggil fungsi untuk mengambil data pengguna
+  }, []); // Efek ini hanya dijalankan sekali saat komponen pertama kali dimuat
 
   const totalPages = Math.ceil(users.length / itemsPerPage);
 
@@ -22,11 +36,14 @@ const ManajemenPengguna = () => {
     setCurrentPage(page);
   };
 
+  // Menentukan rentang halaman untuk ditampilkan (misalnya halaman 1, 2, 3)
+  const paginationRange = [1, 2, 3];
+
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarAdmin />
 
-       <div className="flex-1 p-6">
+      <div className="flex-1 p-6">
         <HeaderManajemenPengguna />
 
         <div className="mt-8">
@@ -45,17 +62,21 @@ const ManajemenPengguna = () => {
               </thead>
               <tbody>
                 {currentUsers.map((user) => (
-                  <tr key={user.id} className="border-b border-green-600">
+                  <tr key={user._id} className="border-b border-green-600">
                     <td className="px-4 py-2">
                       <div className="flex items-center space-x-2">
                         <img
-                          src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109"
+                          src={profilImage}
                           alt={user.name}
                           className="h-8 w-8 rounded-full"
                         />
                         <div>
-                          <span className="block font-semibold">{user.name}</span>
-                          <span className="block text-gray-500">{user.email}</span>
+                          <span className="block font-semibold">
+                            {user.name}
+                          </span>
+                          <span className="block text-gray-500">
+                            {user.email}
+                          </span>
                         </div>
                       </div>
                     </td>
@@ -66,33 +87,19 @@ const ManajemenPengguna = () => {
               </tbody>
             </table>
 
-            <div className="flex justify-end mt-4 space-x-2">
-              <button
-                onClick={() => handlePageChange(1)}
-                className={`w-8 h-8 rounded-full flex justify-center items-center ${
-                  currentPage === 1 ? "bg-green-700 text-white" : "bg-green-500  text-white"
-                }`}
-              >
-                1
-              </button>
-
-              <button
-                onClick={() => handlePageChange(2)}
-                className={`w-8 h-8 rounded-full flex justify-center items-center ${
-                  currentPage === 2 ? "bg-green-700 text-white" : "bg-green-500  text-white"
-                }`}
-              >
-                2
-              </button>
-
-              <button
-                onClick={() => handlePageChange(3)}
-                className={`w-8 h-8 rounded-full flex justify-center items-center ${
-                  currentPage === 3 ? "bg-green-700 text-white" : "bg-green-500  text-white"
-                }`}
-              >
-                3
-              </button>
+            <div className="flex justify-end items-center space-x-2 mt-4">
+              {/* Pagination */}
+              {paginationRange.map((page) => (
+                <button
+                  key={page}
+                  className={`w-8 h-8 ${
+                    currentPage === page ? "bg-emerald-700" : "bg-emerald-500"
+                  } text-white rounded-full`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
             </div>
           </div>
         </div>

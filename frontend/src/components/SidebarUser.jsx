@@ -21,14 +21,54 @@ function SidebarUser() {
   return (
     <>
       <Sidebar>
-        <SidebarItem icon={<FiGrid />} text="Dashboard" route="/" />
-        <SidebarItem icon={<FiPackage />} text="Penitipan" />
-        <SidebarItem icon={<FiTruck />} text="Pengembalian" />
-        <SidebarItem icon={<FiEye />} text="Status" active />
-        <SidebarItem icon={<FiFile />} text="Riwayat" />
-        <SidebarItem icon={<FiBell />} text="Notifikasi" />
-        <SidebarItem icon={<FiMessageSquare />} text="Chat" />
-        <SidebarItem icon={<FiUser />} text="Profil" />
+        <SidebarItem
+          icon={<FiGrid />}
+          text="Dashboard"
+          route="/user/dashboard"
+          active={location.pathname === "/user/dashboard"}
+        />
+        <SidebarItem
+          icon={<FiPackage />}
+          text="Penitipan"
+          route="/PemesananPenitipan"
+          active={location.pathname === "/PemesananPenitipan"}
+        />
+        <SidebarItem
+          icon={<FiTruck />}
+          text="Pengembalian"
+          route="/PengambilanBarang"
+          active={location.pathname === "/PengambilanBarang"}
+        />
+        <SidebarItem
+          icon={<FiEye />}
+          text="Status"
+          route="/PemantauanBarang"
+          active={location.pathname === "/PemantauanBarang"}
+        />
+        <SidebarItem
+          icon={<FiFile />}
+          text="Riwayat"
+          route="/RiwayatPenitipan"
+          active={location.pathname === "/RiwayatPenitipan"}
+        />
+        <SidebarItem
+          icon={<FiBell />}
+          text="Notifikasi"
+          route="/Notifikasi"
+          active={location.pathname === "/Notifikasi"}
+        />
+        <SidebarItem
+          icon={<FiMessageSquare />}
+          text="Chat"
+          route="/faq"
+          active={location.pathname === "/faq"}
+        />
+        <SidebarItem
+          icon={<FiUser />}
+          text="Profil"
+          route="/EditProfile"
+          active={location.pathname === "/EditProfile"}
+        />
         <SidebarItem icon={<FiHome />} text="Beranda" beranda />
         <SidebarItem icon={<FiLogOut />} text="Keluar" keluar />
       </Sidebar>

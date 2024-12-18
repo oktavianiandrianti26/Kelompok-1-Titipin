@@ -1,128 +1,142 @@
 const mongoose = require("mongoose");
-const connectDB = require("../config/db"); // Update path to config/db
+const bcrypt = require("bcryptjs");
+const connectDB = require("../config/db");
 
 // Import models
 const Admin = require("../models/admin_model");
+const User = require("../models/user_model");
 const Barang = require("../models/barang_model");
 const Feedback = require("../models/feedback_model");
+const NotificationInternal = require("../models/notification_internal_model");
+const Notification = require("../models/notification_model");
 const Payment = require("../models/payment_model");
 const Transaction = require("../models/transaction_model");
-const User = require("../models/user_model");
-const Warehouse = require("../models/warehouse_model");
 
-// Koneksi ke MongoDB
-connectDB(); // Memanggil fungsi untuk menghubungkan ke MongoDB
+connectDB(); // Ensure correct DB connection
 
-// Fungsi untuk menghasilkan data acak tanpa faker
+// Seed data function
 const generateRandomData = async () => {
   try {
-    // Clear existing data to avoid duplicates
+    console.log("Menghapus data lama...");
     await User.deleteMany({});
     await Admin.deleteMany({});
-    await Warehouse.deleteMany({});
     await Barang.deleteMany({});
-    await Transaction.deleteMany({});
-    await Payment.deleteMany({});
     await Feedback.deleteMany({});
+    await NotificationInternal.deleteMany({});
+    await Notification.deleteMany({});
+    await Payment.deleteMany({});
+    await Transaction.deleteMany({});
+    console.log("Data lama berhasil dihapus.");
 
-    // Create Users
+    // Create users
+    console.log("Membuat data User...");
     const users = [];
     for (let i = 0; i < 10; i++) {
+      const plainPassword = `password${i + 1}`;
+      console.log(
+        `User${i + 1} -> Email: user${
+          i + 1
+        }@example.com, Password: ${plainPassword}`
+      );
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(plainPassword, salt);
+
       const user = new User({
-        user_id: `user${i + 1}`, // Ensure unique user_id
-        nama: `User ${i + 1}`,
+        name: `User ${i + 1}`,
         email: `user${i + 1}@example.com`,
-        nomor_kontak: `080${100000000 + i}`,
-        social_media: `https://socialmedia.com/user${i + 1}`,
-        password: `password${i + 1}`,
+        phone: `080${100000000 + i}`,
+        password: hashedPassword,
+        role: "user",
       });
       users.push(await user.save());
-    }
 
-    // Create Admins
-    const admin = new Admin({
-      username: "admin1",
-      password: "admin123",
-      transaction_id: new mongoose.Types.ObjectId(), // Ensure 'new' is used here for ObjectId
-    });
-    await admin.save();
+      // Create related data for each user
 
-    // Create Warehouses
-    const warehouse = new Warehouse({
-      limit_jarak: 50,
-      link_gmap: "https://maps.google.com",
-      attitude: -6.2088,
-      longitude: 106.8456,
-    });
-    await warehouse.save();
-
-    // Create Barang (Items)
-    const barang = [];
-    for (let i = 0; i < 5; i++) {
-      const item = new Barang({
-        id_barang: `barang${i + 1}`,
-        id_user: users[i]._id, // Use user ID from previously created users
-        jenis_barang: `Barang Type ${i + 1}`,
-        berat: Math.floor(Math.random() * 100) + 1, // Random weight between 1 and 100
-        deskripsi: `Deskripsi barang ${i + 1}`,
-        status_barang: i % 2 === 0 ? "ready" : "in transit",
+      // Create Barang
+      const barang = new Barang({
+        user_id: user._id,
+        jumlah_barang: 5,
+        deskripsi_barang: `Barang ${i + 1}`,
       });
-      barang.push(await item.save());
-    }
+      await barang.save();
 
-    // Create Transactions
-    const transactions = [];
-    for (let i = 0; i < 3; i++) {
+      // Create Feedback
+      const feedback = new Feedback({
+        user_id: user._id,
+        isi_feedback: `Feedback dari user ${i + 1}`,
+      });
+      await feedback.save();
+
+      // Create NotificationInternal
+      const notificationInternal = new NotificationInternal({
+        user_id: user._id,
+        ulasan: `Ulasan dari user ${i + 1}`,
+        balasan: `Balasan admin untuk user ${i + 1}`,
+      });
+      await notificationInternal.save();
+
+      // Create Notification
+      const notification = new Notification({
+        userId: user._id,
+        senderEmail: `admin${i + 1}@example.com`,
+        recipients: user.email,
+        message: `Pesan untuk user ${i + 1}`,
+      });
+      await notification.save();
+
+      // Create Transaction
       const transaction = new Transaction({
-        user_id: users[i]._id, // User from the created users
-        warehouse_id: warehouse._id, // Warehouse from the created warehouse
-        barang_id: barang[i]._id, // Barang from the created barang
-        titik_alamat: `Alamat ${i + 1}`,
-        titik_jemput: `Jemput ${i + 1}`,
-        biaya_jemput: Math.floor(Math.random() * 100) + 1, // Random cost between 1 and 100
-        jarak_jemput: Math.floor(Math.random() * 50) + 1, // Random distance between 1 and 50
-        total_biaya: Math.floor(Math.random() * 200) + 50, // Random total cost between 50 and 250
-        status: "waiting payment",
+        user_id: user._id,
+        nama: `Nama Transaksi ${i + 1}`,
+        kontak: 123456789,
+        duration: { startDate: new Date(), endDate: new Date() },
+        alamatPenjemputan: `Alamat ${i + 1}`,
+        jarak_jemput: 10,
+        total_biaya_jemput: 50000,
       });
-      transactions.push(await transaction.save());
-    }
+      await transaction.save();
 
-    // Create Payments
-    const payments = [];
-    for (let i = 0; i < 3; i++) {
+      // Create Payment
       const payment = new Payment({
+        user_id: user._id,
         payment_id: `payment${i + 1}`,
-        transaction_id: transactions[i]._id, // Use transaction ID from the created transactions
-        jumlah_bayar: Math.floor(Math.random() * 200) + 50, // Random payment amount
+        transaction_id: transaction._id,
+        jumlah_bayar: 50000,
         tanggal_pembayaran: new Date(),
-        metode_pembayaran: i % 2 === 0 ? "cash" : "credit",
         status_pembayaran: "completed",
       });
-      payments.push(await payment.save());
+      await payment.save();
     }
+    console.log("Data User berhasil dibuat.");
 
-    // Create Feedbacks
-    const feedbacks = [];
-    for (let i = 0; i < 3; i++) {
-      const feedback = new Feedback({
-        review_id: `review${i + 1}`,
-        transaction_id: transactions[i]._id, // Link to transaction
-        user_id: users[i]._id, // Link to user
-        tanggal: new Date(),
-        isi_feedback: `Feedback for transaction ${i + 1}`,
-        rating: Math.floor(Math.random() * 5) + 1, // Random rating between 1 and 5
-      });
-      feedbacks.push(await feedback.save());
-    }
+    // Create Admin
+    console.log("Membuat data Admin...");
+    const adminPassword = "admin123";
+    console.log(
+      `Admin -> Email: admintitipin@gmail.com, Password: ${adminPassword}`
+    );
+
+    const saltAdmin = await bcrypt.genSalt(10);
+    const hashedAdminPassword = await bcrypt.hash(adminPassword, saltAdmin);
+
+    const admin = new Admin({
+      email: "admintitipin@gmail.com",
+      password: hashedAdminPassword,
+      transaction_id: new mongoose.Types.ObjectId(),
+      role: "admin",
+    });
+    await admin.save();
+    console.log("Data Admin berhasil dibuat.");
 
     console.log("Seeder data berhasil dimasukkan!");
   } catch (err) {
     console.error("Error saat memasukkan data:", err);
   } finally {
-    // Menutup koneksi setelah seeding selesai
+    // Close the DB connection
     mongoose.connection.close();
   }
 };
 
-// Jalankan fungsi seed
+// Run the seeder
 generateRandomData();
