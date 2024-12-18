@@ -12,7 +12,9 @@ function Dashboard() {
   useEffect(() => {
     const fetchRiwayatData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/admin/riwayat");
+        const response = await axios.get(
+          "http://localhost:3000/api/admin/riwayat"
+        );
         const data = response.data;
 
         // Olah data untuk Chart Pendapatan
@@ -58,7 +60,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar and main content */}
       <SidebarAdmin />
       <div className="p-8 flex flex-col w-full">
