@@ -19,11 +19,6 @@ function Beranda() {
           khawatir. Kami hadir untuk memberikan layanan yang cepat, aman, dan
           terpercaya sesuai kebutuhan Anda!
         </p>
-        <Button
-          label="Titipin Sekarang"
-          variant="greenPrimary"
-          onClick={handleClick}
-        />
       </div>
       <div className="w-full lg:w-1/2">
         <img src={titipinImage} alt="Hero" className="w-full h-auto" />

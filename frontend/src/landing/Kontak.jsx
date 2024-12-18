@@ -22,28 +22,10 @@ function Kontak() {
           Faq Belum Menjawab?
         </h1>
         <p className="my-4 text-slate-500 font-normal text-lg md:text-xl">
-          Kirimkan pertanyaan Anda pada form di bawah ini untuk mendapatkan
-          jawaban dari Titipin
+          Daftar atau Masuk Akun Anda pada platfrom ini untuk mengirim pesan
+          pertanyaan
         </p>
       </div>
-      <form onSubmit={handleSubmit} className="mt-2 space-y-4 max-w-lg mx-auto">
-        <div className="flex items-center border border-emerald-500 rounded ">
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            placeholder="Tulis Pertanyaan Anda disini"
-            className="flex-1 p-1 justify-center resize-none items-center rounded-lg focus:outline-none overflow-y-hidden"
-            required
-          />
-          <button
-            type="submit"
-            className="bg-emerald-500 text-white py-4 px-3 rounded"
-          >
-            Kirim Pesan
-          </button>
-        </div>
-      </form>
     </section>
   );
 }
