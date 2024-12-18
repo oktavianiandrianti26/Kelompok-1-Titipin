@@ -55,23 +55,25 @@ const SupportChat = () => {
                 <HeaderSupportChat title="Support Chat" />
                 <div className="p-6">
                     <h2 className="text-2xl font-semibold mb-4">
-                        Pertanyaan dari pengguna:
+                        Pesan yang dikirimkan oleh pengguna:
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {chatData.map((chat) => (
-                            <div key={chat.review_id} className="border border-emerald-500 rounded-lg p-4 shadow-sm">
-                                <div className="mb-2">
-                                    <p className="font-medium">{chat.user_id.name}</p>
-                                    <p className="text-sm text-gray-500">{chat.user_id.email}</p>
+                        {chatData
+                            .filter((chat) => chat.user_id) // Hanya render data valid
+                            .map((chat) => (
+                                <div key={chat.review_id} className="border border-emerald-500 rounded-lg p-4 shadow-sm">
+                                    <div className="mb-2">
+                                        <p className="font-medium">{chat.user_id?.name || "Nama tidak tersedia"}</p>
+                                        <p className="text-sm text-gray-500">{chat.user_id?.email || "Email tidak tersedia"}</p>
+                                    </div>
+                                    <p className="mb-4">{chat.isi_feedback}</p>
+                                    {chat.admin_reply && (
+                                        <p className="bg-gray-200 text-sm p-2 rounded">
+                                            Balasan: {chat.admin_reply}
+                                        </p>
+                                    )}
                                 </div>
-                                <p className="mb-4">{chat.isi_feedback}</p>
-                                {chat.admin_reply && (
-                                    <p className="bg-gray-200 text-sm p-2 rounded">
-                                        Balasan: {chat.admin_reply}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </div>
             </div>
