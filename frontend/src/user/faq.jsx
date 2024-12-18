@@ -22,7 +22,7 @@ const FAQPage = () => {
         },
         {
             question: "Berapa biaya layanan Titipin?",
-            answer: "Biaya layanan mulai dari Rp50.000 per hari, tergantung ukuran dan jenis barang.",
+            answer: "Biaya layanan mulai dari Rp5.000 per hari, tergantung ukuran dan jenis barang.",
         },
         {
             question: "Apakah Titipin Aman?",
