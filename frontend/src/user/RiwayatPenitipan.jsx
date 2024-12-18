@@ -115,26 +115,19 @@ const RiwayatPenitipan = () => {
                       {/* Menampilkan jumlah barang, deskripsi, dan alamat */}
                       <div>
                         <span className="font-semibold text-gray-800">
-                          Berat Barang: {""}
+                          Jumlah Barang: {""}
                         </span>
-                        {item.barang_id?.jumlah_barang || "Data tidak tersedia"}
+                        {item.jumlah_barang || "Data tidak tersedia"}
                       </div>
                       <div>
                         <span className="font-semibold text-gray-800">
                           Deskripsi: {""}
                         </span>
-                        {item.barang_id?.deskripsi_barang ||
-                          "Data tidak tersedia"}{" "}
-                      </div>
-                      <div>
-                        <span className="font-semibold text-gray-800">
-                          Alamat: {""}
-                        </span>
-                        {item.titik_alamat || "Data tidak tersedia"}
+                        {item.deskripsi_barang || "Data tidak tersedia"}{" "}
                       </div>
                     </td>
                     {/* Total */}
-                    <td className="p-3 font-semibold">{item.total_biaya}</td>
+                    <td className="p-3 font-semibold">{item.harga}</td>
                     {/* Ulasan */}
                     <td className="p-3 border-r border-emerald-500">
                       {item.ulasan ? (

@@ -6,24 +6,23 @@ const Transaction = require("../models/transaction_model");
 const User = require("../models/user_model");
 const Warehouse = require("../models/warehouse_model");
 
-//Mengambil Seluruh riwayat transaksi
-const getAllTransactions = async (req, res) => {
+// Mengambil Seluruh riwayat transaksi
+const getAllHistory = async (req, res) => {
   try {
-    //Cek riwayat pembayaran
-    const transactions = await Transaction.find({})
+    const barang = await Barang.find({})
       .populate("user_id", "user_id name email")
-      .populate("barang_id", "id_barang jumlah_barang deskripsi_barang")
-      .populate("warehouse_id", "limit_jarak link_gmap")
+      .populate("id_transaction", "barang_id jumlah_barang deskripsi_barang")
       .exec();
-    if (!transactions || transactions.length === 0) {
-      // jika transaksi tidak ada
+
+    if (!barang || barang.length === 0) {
       return res.status(404).json({ message: "Tidak ada Transaksi" });
     }
-    res.status(200).json(transactions);
+
+    res.status(200).json(barang);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { getAllTransactions };
+module.exports = { getAllHistory }; // Pastikan ini ada

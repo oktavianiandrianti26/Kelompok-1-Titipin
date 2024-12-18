@@ -1,10 +1,9 @@
 const express = require("express");
 const {
-  getAllTransactions,
+  getAllHistory,
 } = require("../controllers_admin/riwayatPenitipanAdmin_controllers");
 const router = express.Router();
 
-// Rute untuk mendapatkan semua transaksi
-router.get("/riwayat", getAllTransactions);
+router.get("/riwayat", getAllHistory);
 
 module.exports = router;

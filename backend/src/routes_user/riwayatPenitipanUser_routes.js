@@ -7,6 +7,6 @@ const {
 const router = express.Router();
 
 router.get("/riwayat/:userId", getUserTransactionHistory);
-router.put("/riwayat/:transactionId", updateUserTransactionReview); // Rute untuk memperbarui ulasan
+router.put("/riwayat/:barangId", updateUserTransactionReview); // Rute untuk memperbarui ulasan
 
 module.exports = router;
