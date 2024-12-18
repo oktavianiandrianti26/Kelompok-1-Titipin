@@ -29,6 +29,7 @@ const userRoutes = require("./routes_user/autentikasi_routes");
 const adminRoutes = require("./routes_admin/autentikasi_routes");
 const transactionRoutes = require("./routes_user/transactionRoutes");
 const barangRoutes = require("./routes_user/barangRoutes");
+const feedbackRoutes = require('./routes_admin/feedback_routes');
 
 // Menambahkan rute ke aplikasi
 app.use("/api/user", riwayatUserRoutes, paymentUserRoutes);
@@ -40,6 +41,7 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/barang", barangRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Koneksi ke MongoDB
 connectDB();
