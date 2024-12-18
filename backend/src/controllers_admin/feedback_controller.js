@@ -1,5 +1,7 @@
 const Feedback = require('../models/feedback_model');
 const ResponseAPI = require('../utils/response');
+const User = require('../models/user_model');
+const Admin = require('../models/admin_model');
 
 class FeedbackController {
     async createFeedback(req, res) {
@@ -40,37 +42,39 @@ class FeedbackController {
   // Mendapatkan semua feedback (untuk admin)
   async getAllFeedbacks(req, res) {
     try {
-      const feedbacks = await Feedback.find()
-        .populate('user_id', 'name email') // Menampilkan detail user
-        .sort({ tanggal: -1 }); // Urutkan dari yang terbaru
+        const feedbacks = await Feedback.find()
+            .populate('user_id', 'name email') // Mengambil data user terkait
+            .sort({ tanggal: -1 }); // Urutkan berdasarkan tanggal terbaru
 
-      return ResponseAPI.success(res, feedbacks, 'Daftar feedback');
+        if (!feedbacks || feedbacks.length === 0) {
+            return ResponseAPI.success(res, [], 'Belum ada feedback');
+        }
+
+        return ResponseAPI.success(res, feedbacks, 'Daftar feedback');
     } catch (error) {
-      return ResponseAPI.internalServerError(res, error.message);
+        console.error('Error di getAllFeedbacks:', error);
+        return ResponseAPI.internalServerError(res, error.message);
     }
-  }
+}
 
   // Admin membalas feedback
   async replyFeedback(req, res) {
     try {
-      const { feedbackId } = req.params;
-      const { admin_reply } = req.body;
+        const user = await Admin.findOne({_id: req.user.user_id});
+        if (!user || user.role !== 'admin') {
+          console.log (req.user)
+           return ResponseAPI.unauthorized(res, 'Hanya admin yang dapat membalas');
+        }
+        
+        const { feedbackId } = req.params;
+        const { admin_reply } = req.body;
 
-      const feedback = await Feedback.findByIdAndUpdate(
-        feedbackId,
-        { admin_reply },
-        { new: true }
-      );
-
-      if (!feedback) {
-        return ResponseAPI.notFound(res, 'Feedback tidak ditemukan');
-      }
-
-      return ResponseAPI.success(res, feedback, 'Balasan berhasil dikirim');
+        return ResponseAPI.success(res, null, 'Balasan berhasil dikirim');
     } catch (error) {
-      return ResponseAPI.internalServerError(res, error.message);
+        console.error('Error saat membalas feedback:', error.message);
+        return ResponseAPI.internalServerError(res, error.message);
     }
-  }
+}
 
   // Mendapatkan feedback user saat ini
   async getUserFeedbacks(req, res) {
