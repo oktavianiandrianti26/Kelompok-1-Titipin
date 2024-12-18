@@ -49,7 +49,9 @@ const PengambilanBarang = () => {
     const tanggalAwal = new Date(); // Tanggal sekarang
 
     // Menghitung selisih hari antara tanggal awal dan tanggal yang dipilih
-    const selisihHari = Math.ceil((tanggalBaru - tanggalAwal) / (1000 * 3600 * 24));
+    const selisihHari = Math.ceil(
+      (tanggalBaru - tanggalAwal) / (1000 * 3600 * 24)
+    );
 
     // Perhitungan harga berdasarkan selisih hari
     const hargaPerHari = 5000; // Harga per hari
@@ -87,7 +89,7 @@ const PengambilanBarang = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarUser />
       <div className="flex flex-col w-full">
         <HeaderUser />
@@ -126,7 +128,9 @@ const PengambilanBarang = () => {
                 </p>
               </div>
               <div className="border-t-2 border-emerald-500 p-4 flex gap-4 justify-end">
-                {Buttons.tambahWaktu(() => handleTambahWaktuClick(item.id_barang))}
+                {Buttons.tambahWaktu(() =>
+                  handleTambahWaktuClick(item.id_barang)
+                )}
               </div>
 
               {/* Form Tambah Waktu */}
@@ -160,15 +164,21 @@ const PengambilanBarang = () => {
 
           {/* Pagination Buttons */}
           <div className="flex justify-end items-center space-x-2 ml-auto">
-            {[...Array(Math.ceil(barang.length / itemsPerPage))].map((_, index) => (
-              <button
-                key={index + 1}
-                className={`w-8 h-8 ${currentPage === index + 1 ? "bg-emerald-700" : "bg-emerald-500"} text-white rounded-full`}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
+            {[...Array(Math.ceil(barang.length / itemsPerPage))].map(
+              (_, index) => (
+                <button
+                  key={index + 1}
+                  className={`w-8 h-8 ${
+                    currentPage === index + 1
+                      ? "bg-emerald-700"
+                      : "bg-emerald-500"
+                  } text-white rounded-full`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              )
+            )}
           </div>
         </div>
       </div>

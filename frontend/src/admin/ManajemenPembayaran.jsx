@@ -33,7 +33,7 @@ const ManajemenPembayaran = ({ showHeader = true, showSidebar = true }) => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       {showSidebar && <SidebarAdmin />}
       <div className="flex-grow flex flex-col">

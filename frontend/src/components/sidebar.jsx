@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import profilImage from '../assets/profil.png';
+import profilImage from "../assets/profil.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -13,9 +13,9 @@ export function Sidebar({ children }) {
 
   // Ambil role dari localStorage dan set ke state role
   useEffect(() => {
-    const storedRole = localStorage.getItem("role"); 
+    const storedRole = localStorage.getItem("role");
     if (storedRole) {
-      setRole(storedRole); 
+      setRole(storedRole);
     } else {
       console.error("Role tidak ditemukan di localStorage");
     }
@@ -30,7 +30,10 @@ export function Sidebar({ children }) {
         return;
       }
 
-      const endpoint = role === "admin" ? "/api/admin/profile" : "http://localhost:3000/api/user/profile";
+      const endpoint =
+        role === "admin"
+          ? "/api/admin/profile"
+          : "http://localhost:3000/api/user/profile";
       const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -39,7 +42,11 @@ export function Sidebar({ children }) {
 
       if (role === "admin") {
         setProfileName("Admin Titipin");
-      } else if (role === "user" && response.data.status === "success" && response.data.data?.name) {
+      } else if (
+        role === "user" &&
+        response.data.status === "success" &&
+        response.data.data?.name
+      ) {
         setProfileName(response.data.data.name); // Ambil nama user dari data.profile
       } else {
         console.error("Nama tidak ditemukan dalam respons API.");
@@ -90,11 +97,11 @@ export function Sidebar({ children }) {
             alt="Profile"
           />
           <div
-            className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}
+            className={`overflow-hidden transition-all ${
+              expanded ? "w-52 ml-3" : "w-0"
+            }`}
           >
-            <h4 className="text-white text-xs font-semibold">
-              {profileName}
-            </h4>
+            <h4 className="text-white text-xs font-semibold">{profileName}</h4>
           </div>
         </div>
       </nav>
@@ -102,7 +109,15 @@ export function Sidebar({ children }) {
   );
 }
 
-export function SidebarItem({ icon, text, route, active, alert, keluar, beranda }) {
+export function SidebarItem({
+  icon,
+  text,
+  route,
+  active,
+  alert,
+  keluar,
+  beranda,
+}) {
   const expanded = useContext(SidebarContext);
 
   const itemClass = keluar

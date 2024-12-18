@@ -57,7 +57,7 @@ const RiwayatPenitipan = () => {
   const currentItems = transactions.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <SidebarUser />
       <div className="flex-grow flex flex-col">
         <HeaderUser />
