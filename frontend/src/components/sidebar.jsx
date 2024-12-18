@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import profilImage from '../assets/profil.png';
-import { Link } from "react-router-dom"; // Import Link di sini
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const SidebarContext = createContext();
@@ -13,51 +13,48 @@ export function Sidebar({ children }) {
 
   // Ambil role dari localStorage dan set ke state role
   useEffect(() => {
-    const storedRole = localStorage.getItem("role"); // Mengambil role dari localStorage
+    const storedRole = localStorage.getItem("role"); 
     if (storedRole) {
-      setRole(storedRole); // Menyimpan role ke state
+      setRole(storedRole); 
     } else {
       console.error("Role tidak ditemukan di localStorage");
-      // Bisa redirect ke halaman login jika role tidak ditemukan
     }
   }, []);
 
   // Ambil data nama berdasarkan role (admin/user)
-  useEffect(() => {
-    if (!role) return; // Role harus ada sebelum memanggil API
-  
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem("userToken");
-  
-        if (!token) {
-          console.error("Token tidak ditemukan.");
-          return;
-        }
-  
-        const endpoint = role === "admin" ? "/api/admin/profile" : "http://localhost:3000/api/user/profile"; // Gunakan URL lengkap untuk user
-  
-        const response = await axios.get(endpoint, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-  
-        console.log("Respons API:", response.data);
-  
-        // Set nama berdasarkan role
-        if (role === "admin") {
-          setProfileName("Admin Titipin");
-        } else if (role === "user" && response.data.success && response.data.data?.name) {
-          setProfileName(response.data.data.name); // Ambil nama user dari respons
-        } else {
-          console.error("Nama tidak ditemukan dalam respons API.");
-        }
-      } catch (error) {
-        console.error("Gagal memanggil API profil:", error);
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        console.error("Token tidak ditemukan.");
+        return;
       }
-    };
-  
-    fetchProfile();
-  }, [role]);
+
+      const endpoint = role === "admin" ? "/api/admin/profile" : "http://localhost:3000/api/user/profile";
+      const response = await axios.get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("Respons API:", response.data); // Log respons API untuk memeriksa data
+
+      if (role === "admin") {
+        setProfileName("Admin Titipin");
+      } else if (role === "user" && response.data.status === "success" && response.data.data?.name) {
+        setProfileName(response.data.data.name); // Ambil nama user dari data.profile
+      } else {
+        console.error("Nama tidak ditemukan dalam respons API.");
+      }
+    } catch (error) {
+      console.error("Gagal memanggil API profil:", error);
+    }
+  };
+
+  // Pastikan fetchProfile hanya dipanggil saat role sudah ada
+  useEffect(() => {
+    if (role) {
+      fetchProfile();
+    }
+  }, [role]); // Gunakan role sebagai dependensi
 
   return (
     <aside className="h-min-screen">
@@ -85,6 +82,7 @@ export function Sidebar({ children }) {
         <SidebarContext.Provider value={expanded}>
           <ul className="flex-1 px-2">{children}</ul>
         </SidebarContext.Provider>
+
         <div className="border-t flex p-2 items-center justify-center">
           <img
             src={profilImage}
@@ -95,7 +93,7 @@ export function Sidebar({ children }) {
             className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}
           >
             <h4 className="text-white text-xs font-semibold">
-              {profileName } 
+              {profileName}
             </h4>
           </div>
         </div>
