@@ -96,7 +96,7 @@ const RiwayatPenitipan = () => {
                     </td>
                     <td className="p-3 whitespace-pre-line">
                       <span className="font-semibold text-gray-800">
-                        Jumlag Barang:{" "}
+                        Jumlah Barang:{" "}
                       </span>
                       {item.jumlah_barang || "Data tidak tersedia"}
                       <br />

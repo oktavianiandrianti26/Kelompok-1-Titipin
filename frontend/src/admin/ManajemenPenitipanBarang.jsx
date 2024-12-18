@@ -75,9 +75,6 @@ const ManajemenPenitipanBarang = () => {
                         Alamat: {data.alamatPenjemputan}
                       </p>
                       <p className="text-gray-500 text-sm">
-                        jarak jemput: {data.jarak_jemput}
-                      </p>
-                      <p className="text-gray-500 text-sm">
                         total biaya: {data.total_biaya_jemput}
                       </p>
                     </div>
