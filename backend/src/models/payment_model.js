@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const PaymentSchema = new mongoose.Schema(
   {
@@ -20,10 +21,14 @@ const PaymentSchema = new mongoose.Schema(
       enum: ["pending", "completed", "failed"],
       required: true,
     },
+    nomor_urut: { type: Number, unique: true }, // Nomor urut field
   },
   {
     timestamps: true,
   }
 );
+
+// Apply the auto-increment plugin to the schema
+PaymentSchema.plugin(AutoIncrement, { inc_field: "nomor_urut" });
 
 module.exports = mongoose.model("Payment", PaymentSchema);

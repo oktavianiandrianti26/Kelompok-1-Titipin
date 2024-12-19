@@ -6,22 +6,33 @@ const Transaction = require("../models/transaction_model");
 const User = require("../models/user_model");
 const Warehouse = require("../models/warehouse_model");
 
-// Mengambil Seluruh riwayat pembayaran
 const getAllPayments = async (req, res) => {
   try {
+    // Mengambil semua data pembayaran dari database
     const payments = await Payment.find({})
-      // Cek riwayat pembayaran
       .populate(
-        "payment_id",
-        "tanggal_pembayaran status_pembayaran jumlah_bayar"
+        "user_id", // Mengambil informasi pengguna terkait
+        "name email" // Hanya mengambil nama dan email
       )
-      .populate("user_id", "user_id name email")
+      .populate(
+        "transaction_id", // Mengambil informasi transaksi terkait
+        "tanggal_pembayaran status_pembayaran jumlah_bayar" // Kolom yang ingin ditampilkan
+      )
       .exec();
+
     if (!payments || payments.length === 0) {
-      // jika pembayaran tidak ada
+      // Jika tidak ada data pembayaran
       return res.status(404).json({ message: "Tidak ada Pembayaran" });
     }
-    res.status(200).json(payments);
+
+    // Format data untuk memasukkan nomor transaksi menggunakan nomor urut
+    const formattedPayments = payments.map((payment) => ({
+      ...payment._doc, // Menyalin seluruh properti dari objek payment
+      no_transaksi: `TITIPIN-${payment.nomor_urut.toString().padStart(2, "0")}`, // Menambahkan nomor transaksi dengan format
+    }));
+
+    // Mengirimkan data pembayaran yang diformat ke frontend
+    res.status(200).json(formattedPayments);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error", error: err });
