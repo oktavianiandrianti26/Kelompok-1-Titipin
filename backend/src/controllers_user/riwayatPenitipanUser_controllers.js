@@ -1,10 +1,9 @@
-const Admin = require("../models/admin_model");
 const Barang = require("../models/barang_model");
 const Transaction = require("../models/transaction_model");
 const User = require("../models/user_model");
 const Warehouse = require("../models/warehouse_model");
 
-//Mengambil Seluruh riwayat transaksi
+// Mengambil Seluruh riwayat transaksi
 const getUserTransactionHistory = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -14,14 +13,31 @@ const getUserTransactionHistory = async (req, res) => {
     }
     // Cek riwayat transaksi by ID
     const barang = await Barang.find({ user_id: userId })
-      .populate("id_transaction", " jumlah_barang deskripsi_barang")
-
+      .populate("id_transaction", "jumlah_barang deskripsi_barang")
       .exec();
     // jika transaksi tidak ada
     if (!barang || barang.length === 0) {
       return res.status(404).json({ message: "Tidak Ada Transaksi" });
     }
     res.status(200).json(barang);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Fungsi untuk menghapus transaksi
+const deleteUserTransaction = async (req, res) => {
+  try {
+    const { barangId } = req.params;
+
+    // Find the transaction by ID and delete it
+    const deletedBarang = await Barang.findByIdAndDelete(barangId);
+    if (!deletedBarang) {
+      return res.status(404).json({ message: "Transaksi tidak ditemukan" });
+    }
+
+    res.status(200).json({ message: "Transaksi berhasil dihapus" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -50,4 +66,8 @@ const updateUserTransactionReview = async (req, res) => {
   }
 };
 
-module.exports = { getUserTransactionHistory, updateUserTransactionReview };
+module.exports = {
+  getUserTransactionHistory,
+  updateUserTransactionReview,
+  deleteUserTransaction,
+};

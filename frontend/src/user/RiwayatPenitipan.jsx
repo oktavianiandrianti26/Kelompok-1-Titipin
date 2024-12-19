@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import SidebarUser from "../components/SidebarUser";
 import HeaderUser from "../components/HeaderUser";
-import { Buttons } from "../components/Button";
 import axios from "axios";
 
 const RiwayatPenitipan = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-  const [review, setReview] = useState({});
+  const [transactions, setTransactions] = useState([]); // State untuk menyimpan data transaksi
+  const [currentPage, setCurrentPage] = useState(1); // State untuk halaman pagination
+  const itemsPerPage = 4; // Jumlah item per halaman
+  const [review, setReview] = useState({}); // State untuk menyimpan ulasan
 
+  // Fungsi untuk mengambil data riwayat transaksi dari backend
   useEffect(() => {
     const fetchTransactionHistory = async () => {
       try {
@@ -27,11 +27,11 @@ const RiwayatPenitipan = () => {
     fetchTransactionHistory();
   }, []);
 
+  // Fungsi untuk mengirim ulasan ke backend
   const handleReviewSubmit = async (transactionId) => {
     try {
       const ulasan = review[transactionId];
       if (!ulasan) return;
-      // Ambil data riwayat transaksi berdasarkan transactionId dari API
       await axios.put(
         `http://localhost:3000/api/user/riwayat/${transactionId}`,
         {
@@ -61,128 +61,94 @@ const RiwayatPenitipan = () => {
       <SidebarUser />
       <div className="flex-grow flex flex-col">
         <HeaderUser />
-        <div className="bg-white rounded-lg p-5 flex-grow">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-emerald-500 rounded-md">
-              <thead>
-                {/* Judul Utama */}
-                <tr>
-                  <th
-                    colSpan="5"
-                    className="p-4 border-b border-emerald-500 text-left text-xl font-semibold text-gray-900"
-                  >
-                    Riwayat Penitipan
-                  </th>
-                </tr>
-                {/* Header Kolom */}
-                <tr className="bg-gray-50 text-gray-800">
-                  <th className="p-3 border-l border-emerald-500 text-left">
-                    Nomor
-                  </th>
-                  <th className="p-3 text-left">Tanggal</th>
-                  <th className="p-3 text-left">Barang</th>
-                  <th className="p-3 text-left">Total</th>
-                  <th className="p-3 border-r border-emerald-500 text-left">
-                    Ulasan
-                  </th>
-                </tr>
-                <tr>
-                  <td colSpan="5">
-                    <hr className="border-t-2 border-emerald-500" />
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((item, index) => (
-                  <tr
-                    key={item._id}
-                    className={`${
-                      index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                    } text-gray-800 border-b border-emerald-500`}
-                  >
-                    {/* Nomor */}
-                    <td className="p-3 border-l border-emerald-500">
-                      {item._id}
-                    </td>
-                    {/* Tanggal */}
-                    <td className="p-3">
-                      <span className="bg-emerald-100 px-3 py-1 rounded-md font-semibold">
-                        {new Date(item.createdAt).toLocaleDateString()}
+        <div className="w-full max-w-full rounded-lg p-5">
+          <div className="grid grid-cols-1 gap-4">
+            {currentItems.map((item) => (
+              <div
+                key={item._id}
+                className="border border-emerald-500 rounded-lg p-4 bg-white shadow-md"
+              >
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  {/* Nomor */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">
+                      Nomor Penitipan
+                    </p>
+                    <p>TITIPIN-0{item.nomor_riwayat}</p>
+                  </div>
+
+                  {/* Tanggal Transaksi */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Tanggal</p>
+                    <p>{new Date(item.createdAt).toLocaleDateString()}</p>
+                  </div>
+
+                  {/* Barang */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Barang</p>
+                    <p>
+                      Jumlah: {item.jumlah_barang || "Tidak tersedia"}
+                      <br />
+                      Deskripsi: {item.deskripsi_barang || "Tidak tersedia"}
+                    </p>
+                  </div>
+
+                  {/* Total Harga */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Total</p>
+                    <p>Rp. {item.harga || "Rp. 0"}</p>
+                  </div>
+
+                  {/* Ulasan */}
+                  <div className="flex flex-col items-start">
+                    {item.ulasan ? (
+                      <span className="px-3 py-1 bg-emerald-100 rounded-md">
+                        {item.ulasan}
                       </span>
-                    </td>
-                    {/* Barang */}
-                    <td className="p-3 whitespace-pre-line">
-                      {/* Menampilkan jumlah barang, deskripsi, dan alamat */}
+                    ) : (
                       <div>
-                        <span className="font-semibold text-gray-800">
-                          Jumlah Barang: {""}
-                        </span>
-                        {item.jumlah_barang || "Data tidak tersedia"}
-                      </div>
-                      <div>
-                        <span className="font-semibold text-gray-800">
-                          Deskripsi: {""}
-                        </span>
-                        {item.deskripsi_barang || "Data tidak tersedia"}{" "}
-                      </div>
-                    </td>
-                    {/* Total */}
-                    <td className="p-3 font-semibold">{item.harga}</td>
-                    {/* Ulasan */}
-                    <td className="p-3 border-r border-emerald-500">
-                      {item.ulasan ? (
-                        <span className="px-3 py-1 bg-emerald-100 rounded-md">
-                          {item.ulasan}
-                        </span>
-                      ) : (
-                        <div className="flex flex-col items-start">
-                          <input
-                            type="text"
-                            placeholder="Ketik ulasan"
-                            value={review[item._id] || ""}
-                            onChange={(e) =>
-                              setReview({
-                                ...review,
-                                [item._id]: e.target.value,
-                              })
-                            }
-                            className="px-3 py-2 border border-emerald-500 rounded-md w-full"
-                          />
-                          <button
-                            onClick={() => handleReviewSubmit(item._id)}
-                            className="mt-2 px-4 py-2 bg-emerald-500 text-white rounded-md"
-                          >
-                            Kirim Ulasan
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              {/* Pagination */}
-              <tfoot>
-                <tr>
-                  <td colSpan="5" className="p-3">
-                    <div className="flex justify-end space-x-2">
-                      {[1, 2, 3].map((page) => (
+                        <input
+                          type="text"
+                          placeholder="Ketik ulasan"
+                          value={review[item._id] || ""}
+                          onChange={(e) =>
+                            setReview({
+                              ...review,
+                              [item._id]: e.target.value,
+                            })
+                          }
+                          className="px-3 py-2 border border-emerald-500 rounded-md w-full"
+                        />
                         <button
-                          key={page}
-                          onClick={() => setCurrentPage(page)}
-                          className={`w-8 h-8 ${
-                            currentPage === page
-                              ? "bg-emerald-700 text-white"
-                              : "bg-emerald-500 text-white"
-                          } rounded-full`}
+                          onClick={() => handleReviewSubmit(item._id)}
+                          className="mt-2 px-4 py-2 bg-emerald-500 text-white rounded-md"
                         >
-                          {page}
+                          Kirim Ulasan
                         </button>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="mt-6 flex justify-end items-center space-x-2">
+            {Array.from(
+              { length: Math.ceil(transactions.length / itemsPerPage) },
+              (_, i) => i + 1
+            ).map((page) => (
+              <button
+                key={page}
+                className={`w-8 h-8 ${
+                  currentPage === page ? "bg-emerald-700" : "bg-emerald-500"
+                } text-white rounded-full`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
           </div>
         </div>
       </div>

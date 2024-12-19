@@ -11,7 +11,10 @@ const getAllHistory = async (req, res) => {
   try {
     const barang = await Barang.find({})
       .populate("user_id", "user_id name email")
-      .populate("id_transaction", "barang_id jumlah_barang deskripsi_barang")
+      .populate(
+        "id_transaction",
+        "barang_id jumlah_barang deskripsi_barang nomor_riwayat"
+      )
       .exec();
 
     if (!barang || barang.length === 0) {
