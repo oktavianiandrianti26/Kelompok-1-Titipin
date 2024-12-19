@@ -34,6 +34,34 @@ const Notifikasi = () => {
     fetchNotifikasi(); // Panggil fungsi saat komponen dimuat
   }, []);
 
+  const deleteNotification = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/user/notifications/delete-notification/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`, // Menambahkan token di header
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Setelah berhasil dihapus, update state notifikasi
+        setNotifikasi(notifikasi.filter((notif) => notif._id !== id));
+        alert("Notifikasi berhasil dihapus");
+      } else {
+        alert(data.message || "Terjadi kesalahan saat menghapus notifikasi.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan saat menghapus notifikasi.");
+    }
+  };
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar Component */}
@@ -56,6 +84,7 @@ const Notifikasi = () => {
                   <th className="py-2 border-b border-green-500">Tanggal</th>
                   <th className="py-2 border-b border-green-500">Balasan</th>
                   <th className="py-2 border-b border-green-500">Ulasan</th>
+                  <th className="py-2 border-b border-green-500">Aksi</th>
                   {/* <th className="py-2 border-b border-green-500">Pesan</th> */}
                 </tr>
               </thead>
@@ -76,6 +105,15 @@ const Notifikasi = () => {
 
                       <td className="py-2 border-b border-green-500">
                         {notif.ulasan}
+                      </td>
+
+                      <td className="py-2 border-b border-green-500">
+                        <button
+                          onClick={() => deleteNotification(notif._id)}
+                          className="px-4 py-2 rounded-md bg-red-600  hover:bg-red-700 text-white"
+                        >
+                          Hapus
+                        </button>
                       </td>
 
                       {/* <td className="py-2 border-b border-green-500">{notif.message}</td> */}

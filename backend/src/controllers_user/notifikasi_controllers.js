@@ -23,6 +23,35 @@ const getNotifications = async (req, res) => {
   }
 };
 
+const deleteNotification = async (req, res) => {
+  try {
+    const userId = req.user._id; // Ambil ID pengguna yang sudah terverifikasi
+    const notificationId = req.params.id; // Ambil ID notifikasi yang ingin dihapus
+
+    // Cari notifikasi berdasarkan ID dan pastikan notifikasi milik pengguna yang sedang login
+    const notification = await Notification.findOne({
+      _id: notificationId,
+      user_id: userId,
+    });
+
+    if (!notification) {
+      return res
+        .status(404)
+        .json({
+          message: "Notifikasi tidak ditemukan atau tidak milik pengguna ini.",
+        });
+    }
+
+    // Hapus notifikasi dari database
+    await Notification.deleteOne({ _id: notificationId });
+
+    return res.status(200).json({ message: "Notifikasi berhasil dihapus." });
+  } catch (error) {
+    console.error("Error saat menghapus notifikasi:", error.message);
+    return res.status(500).json({ message: "Gagal menghapus notifikasi." });
+  }
+};
+
 const pushNotifications = async (req, res) => {
   console.log(req.body);
   try {
@@ -41,4 +70,4 @@ const pushNotifications = async (req, res) => {
   }
 };
 
-module.exports = { getNotifications, pushNotifications };
+module.exports = { getNotifications, pushNotifications, deleteNotification };
