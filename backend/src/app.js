@@ -11,6 +11,8 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+const path = require("path");
+
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -29,7 +31,7 @@ const userRoutes = require("./routes_user/autentikasi_routes");
 const adminRoutes = require("./routes_admin/autentikasi_routes");
 const transactionRoutes = require("./routes_user/transactionRoutes");
 const barangRoutes = require("./routes_user/barangRoutes");
-const feedbackRoutes = require('./routes_admin/feedback_routes');
+const feedbackRoutes = require("./routes_admin/feedback_routes");
 
 // Menambahkan rute ke aplikasi
 app.use("/api/user", riwayatUserRoutes, paymentUserRoutes);
@@ -41,7 +43,12 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/barang", barangRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
-app.use('/api/feedback', feedbackRoutes);
+app.use("/api/feedback", feedbackRoutes);
+
+// Log untuk memastikan path yang benar
+console.log("Uploads folder path:", path.join(__dirname, "uploads"));
+// Menyajikan file statis di folder "uploads"
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Koneksi ke MongoDB
 connectDB();
