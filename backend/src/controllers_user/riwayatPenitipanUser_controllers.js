@@ -26,24 +26,6 @@ const getUserTransactionHistory = async (req, res) => {
   }
 };
 
-// Fungsi untuk menghapus transaksi
-const deleteUserTransaction = async (req, res) => {
-  try {
-    const { barangId } = req.params;
-
-    // Find the transaction by ID and delete it
-    const deletedBarang = await Barang.findByIdAndDelete(barangId);
-    if (!deletedBarang) {
-      return res.status(404).json({ message: "Transaksi tidak ditemukan" });
-    }
-
-    res.status(200).json({ message: "Transaksi berhasil dihapus" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 // Fungsi untuk memperbarui ulasan transaksi
 const updateUserTransactionReview = async (req, res) => {
   try {
@@ -69,5 +51,4 @@ const updateUserTransactionReview = async (req, res) => {
 module.exports = {
   getUserTransactionHistory,
   updateUserTransactionReview,
-  deleteUserTransaction,
 };

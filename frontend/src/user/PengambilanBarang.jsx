@@ -113,7 +113,8 @@ const PengambilanBarang = () => {
               <div className="border-b-2 border-emerald-500">
                 <div className="p-4">
                   <h2 className="text-xl font-semibold text-slate-500">
-                    Informasi Barang - ID Barang: {item.id_barang}
+                    Informasi Barang - Nomor Penitipan: TITIPIN-0
+                    {item.nomor_riwayat}
                   </h2>
                 </div>
               </div>
@@ -137,7 +138,8 @@ const PengambilanBarang = () => {
               {formState.tambahWaktu === item.id_barang && (
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2 text-slate-600">
-                    Tambah Waktu untuk ID Penitipan: {item.id_barang}
+                    Tambah Waktu untuk Nomor Penitipan: TITIPIN-0
+                    {item.nomor_riwayat}
                   </h3>
                   <input
                     type="date"
