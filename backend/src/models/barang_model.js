@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose); // Import plugin mongoose-sequence
 
 const BarangSchema = new mongoose.Schema(
   {
@@ -17,16 +18,11 @@ const BarangSchema = new mongoose.Schema(
       ref: "Transaction",
     },
     deskripsi_barang: { type: String, trim: true },
-    jumlah_barang: { type: Number, required: true }, // Ubah ke Number
-    harga: { type: Number, default: 0 }, // Harga akan dihitung
-    ulasan: {
-      type: String,
-      default: null, // Default ulasan menjadi null
-    },
-    balasan: {
-      type: String, // Field untuk menyimpan balasan
-      default: "",
-    },
+    jumlah_barang: { type: Number, required: true },
+    harga: { type: Number, default: 0 },
+    ulasan: { type: String, default: null },
+    balasan: { type: String, default: "" },
+    nomor_riwayat: { type: Number, unique: true },
   },
   {
     timestamps: true,
@@ -37,6 +33,13 @@ const BarangSchema = new mongoose.Schema(
 BarangSchema.pre("save", function (next) {
   this.harga = this.jumlah_barang * 5000;
   next();
+});
+
+// Plugin auto-increment untuk nomor urut berdasarkan user_id
+BarangSchema.plugin(AutoIncrement, {
+  inc_field: "nomor_riwayat",
+  start_seq: 1, // Start sequence from 1
+  id: "user_id", // Reference the user_id for auto-increment
 });
 
 module.exports = mongoose.model("Barang", BarangSchema);

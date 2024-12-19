@@ -40,102 +40,74 @@ const RiwayatPenitipan = () => {
           <HeaderRiwayatPenitipan />
         </div>
 
-        {/* Konten */}
-        <div className="bg-white rounded-lg p-5 flex-grow">
-          <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-emerald-500">
-              <thead className="bg-white">
-                <tr className="text-gray-600">
-                  <th
-                    colSpan="6"
-                    className="p-3 border border-emerald-500 text-left text-xl font-semibold text-gray-900"
-                  >
-                    Daftar Pengguna
-                  </th>
-                </tr>
-                <tr className="text-gray-800 border-b border-emerald-500">
-                  <th className="p-3 text-left bg-white">Nomor</th>
-                  <th className="p-3 text-left bg-white">Tanggal</th>
-                  <th className="p-3 text-left bg-white">Pengguna</th>
-                  <th className="p-3 text-left bg-white"> Barang</th>
-                  <th className="p-3 text-left bg-white">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((item, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white text-gray-800 border-b border-emerald-500"
-                  >
-                    <td className="p-3 text-left">{item._id}</td>
-                    <td className="p-3 text-left whitespace-nowrap">
-                      <span className="bg-emerald-100 text-gray-800 px-3 py-1 rounded-md font-semibold">
-                        {new Date(item.createdAt).toLocaleDateString()}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={
-                            item.user_id?.foto ||
-                            "https://via.placeholder.com/40"
-                          }
-                          // Import Foto dari user
-                          alt="Foto Pengguna"
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div>
-                          <p className="font-semibold text-black-800">
-                            {item.user_id?.name || "Data tidak tersedia"}
-                          </p>
-                          <p className="text-gray-700">
-                            {item.user_id?.email || "Data tidak tersedia"}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-3 whitespace-pre-line">
-                      <span className="font-semibold text-gray-800">
-                        Jumlah Barang:{" "}
-                      </span>
-                      {item.jumlah_barang || "Data tidak tersedia"}
+        <div className="w-full max-w-full rounded-lg p-5">
+          <div className="grid grid-cols-1 gap-4">
+            {currentItems.map((item, index) => (
+              <div
+                key={index}
+                className="border border-emerald-500 rounded-lg p-4 bg-white shadow-md"
+              >
+                {/* Data Transaksi (responsif dengan Flexbox) */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  {/* Nomor Transaksi */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">
+                      No Penitipan
+                    </p>
+                    <p>TITIPIN-0{item.nomor_riwayat}</p>
+                  </div>
+
+                  {/* Tanggal Transaksi */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Tanggal</p>
+                    <p>{new Date(item.createdAt).toLocaleDateString()}</p>
+                  </div>
+
+                  {/* Informasi Pengguna */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Pengguna</p>
+                    <p>{item.user_id?.name || "Nama tidak tersedia"}</p>
+                    <p className="text-sm text-gray-600">
+                      {item.user_id?.email || "Email tidak tersedia"}
+                    </p>
+                  </div>
+
+                  {/* Barang */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Barang</p>
+                    <p>
+                      Jumlah: {item.jumlah_barang || "Tidak tersedia"}
                       <br />
-                      <span className="font-semibold text-gray-800">
-                        Deskripsi:{" "}
-                      </span>
-                      {item.deskripsi_barang || "Data tidak tersedia"} <br />
-                    </td>
-                    <td className="p-3 border-r border-emerald-500 whitespace-nowrap">
-                      <span className="text-gray-800 px-3 py-1 rounded-md">
-                        {item.harga || "Rp. 0"}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan="6" className="p-3">
-                    {/* Pagination */}
-                    <div className="flex justify-end items-center space-x-2">
-                      {[1, 2, 3].map((page) => (
-                        <button
-                          key={page}
-                          className={`w-8 h-8 ${
-                            currentPage === page
-                              ? "bg-emerald-700"
-                              : "bg-emerald-500"
-                          } text-white rounded-full`}
-                          onClick={() => handlePageChange(page)}
-                        >
-                          {page}
-                        </button>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                      Deskripsi: {item.deskripsi_barang || "Tidak tersedia"}
+                    </p>
+                  </div>
+
+                  {/* Total Harga */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Total</p>
+                    <p>Rp. {item.harga || "Rp. 0"}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="mt-6 flex justify-end items-center space-x-2">
+            {Array.from(
+              { length: Math.ceil(transactions.length / itemsPerPage) },
+              (_, i) => i + 1
+            ).map((page) => (
+              <button
+                key={page}
+                className={`w-8 h-8 ${
+                  currentPage === page ? "bg-emerald-700" : "bg-emerald-500"
+                } text-white rounded-full`}
+                onClick={() => handlePageChange(page)}
+              >
+                {page}
+              </button>
+            ))}
           </div>
         </div>
       </div>
