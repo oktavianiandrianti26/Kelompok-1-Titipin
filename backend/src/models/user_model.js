@@ -24,7 +24,8 @@ const UserSchema = new mongoose.Schema({
     enum: ['user'], // User hanya memiliki role user
     default: 'user' 
   }, // Menambahkan role dengan nilai default user
-  token: { type: String }
+  token: { type: String },
+  profileImageUrl: { type: String, default: '' }  // Menambahkan field profileImageUrl
 }, {
   timestamps: true,
   toJSON: {

@@ -3,9 +3,25 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user_model');
 const ResponseAPI = require('../utils/response');
 const { jwtSecret } = require('../config/env');
+const multer = require('multer'); // Pastikan ini diimpor
+const path = require('path'); // Import path untuk mengatur ekstensi file
+
+
+// Konfigurasi penyimpanan file
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Pastikan path menuju folder uploads di dalam src
+    cb(null, path.join(__dirname, 'uploads'));  // Ini akan mencari folder uploads di dalam folder src
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Register
-// Fungsi untuk registrasi pengguna
 const register = async (req, res) => {
   const { name, email, phone, password, konfirmasi_password } = req.body;
 
@@ -87,26 +103,27 @@ const login = async (req, res) => {
 
 // Get Profile
 const getProfile = async (req, res) => {
-    const userId = req.user.id;
+  const userId = req.user.id;
 
-    try {
-        const user = await User.findById(userId);
-        if (!user) {
-            return ResponseAPI.error(res, 'Pengguna tidak ditemukan', 404);
-        }
-
-        return ResponseAPI.success(res, {
-            id: user._id,
-            name: user.name,       // Ganti 'nama' menjadi 'name'
-            email: user.email,
-            phone: user.phone,     // Ganti 'nomor_kontak' menjadi 'phone'
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        }, 'Profil pengguna berhasil diambil');
-    } catch (error) {
-        console.error('Error saat mengambil profile:', error.message);
-        return ResponseAPI.serverError(res, error);
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return ResponseAPI.error(res, 'Pengguna tidak ditemukan', 404);
     }
+
+    return ResponseAPI.success(res, {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      profileImageUrl: user.profileImageUrl, // Tambahkan field profileImageUrl
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }, 'Profil pengguna berhasil diambil');
+  } catch (error) {
+    console.error('Error saat mengambil profile:', error.message);
+    return ResponseAPI.serverError(res, error);
+  }
 };
 
 // Edit Profile (name, email, phone)
@@ -141,10 +158,43 @@ const getUsers = async (req, res) => {
   }
 };
 
+// Endpoint untuk upload foto profil
+const uploadProfileImage = async (req, res) => {
+  try {
+    // Pastikan user sudah login dan data pengguna tersedia
+    const user = await User.findById(req.user._id); // Ambil data user dari token
+
+    if (!user) {
+      return res.status(404).json({ message: "User tidak ditemukan" });
+    }
+
+    // Memastikan file di-upload
+    if (!req.file) {
+      return res.status(400).json({ message: "Foto profil tidak ditemukan" });
+    }
+
+    // Update URL foto profil di dalam database
+    const profileImageUrl = `/uploads/${req.file.filename}`;
+    user.profileImageUrl = profileImageUrl;
+    await user.save(); // Simpan perubahan ke database
+
+    // Kirimkan respons dengan URL foto profil yang sudah diperbarui
+    res.status(200).json({
+      message: "Foto profil berhasil diperbarui",
+      profileImageUrl: user.profileImageUrl, // Menampilkan URL foto yang baru di-upload
+    });
+  } catch (error) {
+    console.error('Error saat mengunggah foto profil:', error.message);
+    res.status(500).json({ message: "Gagal mengunggah foto", error: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
   editProfile,
   getUsers,
+  upload, 
+  uploadProfileImage,
 };
