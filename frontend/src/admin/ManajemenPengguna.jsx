@@ -66,7 +66,11 @@ const ManajemenPengguna = () => {
                     <td className="px-4 py-2">
                       <div className="flex items-center space-x-2">
                         <img
-                          src={profilImage}
+                          src={
+                            user.profileImageUrl
+                              ? `http://localhost:3000${user.profileImageUrl}`
+                              : profilImage
+                          }
                           alt={user.name}
                           className="h-8 w-8 rounded-full"
                         />
