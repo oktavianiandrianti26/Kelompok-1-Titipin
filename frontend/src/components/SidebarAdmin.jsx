@@ -59,12 +59,7 @@ function SidebarAdmin() {
           route="/PengaturanNotifikasi"
           active={location.pathname === "/PengaturanNotifikasi"}
         />
-        <SidebarItem
-          icon={<FiMessageSquare />}
-          text="Chat"
-          route="/SupportChat"
-          active={location.pathname === "/SupportChat"}
-        />
+
         <SidebarItem
           icon={<FiHome />}
           text="Beranda"
