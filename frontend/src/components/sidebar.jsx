@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import profilImage from "../assets/profil.png";
+import profileAdminImage from "../assets/profileAdmin.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -10,6 +11,7 @@ export function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true);
   const [profileName, setProfileName] = useState(""); // State untuk nama pengguna
   const [role, setRole] = useState(""); // State untuk role
+  const [profileImage, setProfileImage] = useState(profilImage); // State untuk gambar profil
 
   // Ambil role dari localStorage dan set ke state role
   useEffect(() => {
@@ -21,7 +23,7 @@ export function Sidebar({ children }) {
     }
   }, []);
 
-  // Ambil data nama berdasarkan role (admin/user)
+  // Ambil data nama dan foto berdasarkan role (admin/user)
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("userToken");
@@ -42,14 +44,18 @@ export function Sidebar({ children }) {
 
       if (role === "admin") {
         setProfileName("Admin Titipin");
+        setProfileImage(profileAdminImage); // Pasang foto admin default
       } else if (
         role === "user" &&
         response.data.status === "success" &&
         response.data.data?.name
       ) {
         setProfileName(response.data.data.name); // Ambil nama user dari data.profile
+        if (response.data.data.profileImageUrl) {
+          setProfileImage(`http://localhost:3000${response.data.data.profileImageUrl}`); // Pasang foto profil user
+        }
       } else {
-        console.error("Nama tidak ditemukan dalam respons API.");
+        console.error("Data profil tidak valid atau tidak ditemukan.");
       }
     } catch (error) {
       console.error("Gagal memanggil API profil:", error);
@@ -92,7 +98,7 @@ export function Sidebar({ children }) {
 
         <div className="border-t flex p-2 items-center justify-center">
           <img
-            src={profilImage}
+            src={profileImage}
             className="h-8 w-8 rounded-full"
             alt="Profile"
           />
