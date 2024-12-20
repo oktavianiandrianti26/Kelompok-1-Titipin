@@ -6,7 +6,6 @@ import ManajemenPengguna from "./admin/ManajemenPengguna";
 import DashboardAdmin from "./admin/Dashboard";
 import ManajemenPenitipanBarang from "./admin/ManajemenPenitipanBarang";
 import PengaturanNotifikasi from "./admin/PengaturanNotifikasi";
-import SupportChat from "./admin/SupportChat";
 import UlasanPengguna from "./admin/UlasanPengguna";
 import RiwayatPenitipanAdmin from "./admin/RiwayatPenitipan";
 
@@ -53,7 +52,6 @@ function App() {
           path="/PengaturanNotifikasi"
           element={<PengaturanNotifikasi />}
         />
-        <Route path="/SupportChat" element={<SupportChat />} />
         <Route path="/UlasanPengguna" element={<UlasanPengguna />} />
         <Route
           path="/admin/RiwayatPenitipan"

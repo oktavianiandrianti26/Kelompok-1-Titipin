@@ -4,8 +4,6 @@ import HeaderUser from "../components/HeaderUser";
 
 const FAQPage = () => {
     const [expandedQuestion, setExpandedQuestion] = useState(null);
-    const [message, setMessage] = useState(""); // Input for feedback message
-    const [token] = useState(localStorage.getItem("token")); // Token from login
 
     const questions = [
         {
@@ -34,44 +32,6 @@ const FAQPage = () => {
         setExpandedQuestion(expandedQuestion === index ? null : index);
     };
 
-    const handleSendFeedback = async () => {
-        try {
-            // Mengambil token dari localStorage
-            const token = localStorage.getItem("userToken");
-            console.log('Token yang ditemukan:', token);
-            
-            // Jika token tidak ada, beri peringatan
-            if (!token) {
-                alert('Token tidak ditemukan. Anda perlu login terlebih dahulu.');
-                return;
-            }
-    
-            // Mengirim permintaan dengan token yang diambil
-            const response = await fetch("http://localhost:3000/api/feedback", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,  // Token yang diambil dari localStorage
-                },
-                body: JSON.stringify({ isi_feedback: message }),
-            });
-    
-            // Menangani respons server
-            if (!response.ok) {
-                const errorMessage = await response.text();  // Ambil body respons dalam format teks jika bukan JSON
-                throw new Error(`Kesalahan Server: ${errorMessage}`);
-            }
-    
-            const result = await response.json();
-            alert("Pertanyaan berhasil dikirim!");
-            setMessage(""); // Reset input pesan
-        } catch (error) {
-            console.error("Kesalahan:", error);
-            alert(`Gagal mengirimkan pertanyaan: ${error.message}`);
-        }
-    };
-    
-
     return (
         <div className="flex min-h-screen">
             <SidebarUser />
@@ -97,21 +57,21 @@ const FAQPage = () => {
                             ))}
                         </div>
 
-                        <div className="bg-white p-6 shadow-lg rounded-lg">
-                            <h2 className="text-xl font-semibold mb-4">Punya pertanyaan lain?</h2>
-                            <textarea
-                                className="w-full border p-3 rounded-lg focus:ring-green-500 focus:border-green-500"
-                                rows="4"
-                                placeholder="Tulis pertanyaan Anda di sini"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                            />
-                            <button
-                                onClick={handleSendFeedback}
-                                className="mt-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                        <div className="bg-white p-6 shadow-lg rounded-lg flex items-center justify-between">
+                            <h2 className="text-xl font-semibold">Punya Pertanyaan Lain?</h2>
+                            <a
+                                href="https://wa.me/6285524433892"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                             >
-                                Kirim Pertanyaan
-                            </button>
+                                <img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                    alt="WhatsApp"
+                                    className="w-6 h-6 mr-2"
+                                />
+                                Hubungi Kami di WhatsApp
+                            </a>
                         </div>
                     </div>
                 </main>
