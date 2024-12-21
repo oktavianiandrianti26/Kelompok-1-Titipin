@@ -509,7 +509,7 @@ const PemesananPenitipanCheckout = () => {
                 <input
                   type="text"
                   name="asal"
-                  value="Bandung" // Ganti dengan kota asal
+                  value="Padang" // Ganti dengan kota asal
                   className="w-full border rounded p-2 bg-[#d1fae5]"
                   required
                   disabled

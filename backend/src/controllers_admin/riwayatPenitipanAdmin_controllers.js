@@ -13,7 +13,7 @@ const getAllHistory = async (req, res) => {
       .populate("user_id", "user_id name email")
       .populate(
         "id_transaction",
-        "barang_id jumlah_barang deskripsi_barang nomor_riwayat"
+        "barang_id jumlah_barang deskripsi_barang nomor_riwayat fileBarang"
       )
       .exec();
 

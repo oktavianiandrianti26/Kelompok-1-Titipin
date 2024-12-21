@@ -6,6 +6,8 @@ import { Buttons } from "../components/Button"; // Pastikan Buttons sudah diimpo
 
 const PengambilanBarang = () => {
   const [barang, setBarang] = useState([]); // State untuk data barang
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
   const [formState, setFormState] = useState({
     tambahWaktu: null,
     waktuTambahan: 0, // Tambahan waktu (dalam hari)
@@ -41,6 +43,37 @@ const PengambilanBarang = () => {
       ...prevState,
       tambahWaktu: prevState.tambahWaktu === id_barang ? null : id_barang,
     }));
+  };
+
+
+  const handleUbahStatusClick = async (id_barang) => {
+    try {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        setError("Token tidak ditemukan");
+        return;
+      }
+      // Send only the necessary data for profile update
+      const response = await axios.put(
+        `http://localhost:3000/api/transactions/barang/${id_barang}`,
+        {
+          status: "Selesai",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        alert("Berhasil mengubah status barang");
+        setError("");
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan:", error);
+      setError(error.response?.data?.message || "Gagal memperbarui profil");
+    }
   };
 
   // Handle perubahan input tanggal
@@ -129,10 +162,15 @@ const PengambilanBarang = () => {
                 </p>
               </div>
               <div className="border-t-2 border-emerald-500 p-4 flex gap-4 justify-end">
+                {Buttons.ambilBarang(() => handleUbahStatusClick(item.id_barang))}
                 {Buttons.tambahWaktu(() =>
                   handleTambahWaktuClick(item.id_barang)
                 )}
               </div>
+              {successMessage && (
+              <p className="mt-4 text-green-600">{successMessage}</p>
+            )}
+            {error && <p className="mt-4 text-red-600">{error}</p>}
 
               {/* Form Tambah Waktu */}
               {formState.tambahWaktu === item.id_barang && (

@@ -69,7 +69,7 @@ const getAllTransactions = async (req, res) => {
     const transactions = await Transaction.find({ user_id: req.user.id }) // Filter berdasarkan user_id
       .populate("user_id", "nama") // populate data user
       .select(
-        "nama kontak alamatPenjemputan duration jarak_jemput total_biaya_jemput denda ulasan balasan createdAt"
+        "nama kontak alamatPenjemputan duration jarak_jemput total_biaya_jemput denda ulasan balasan createdAt status"
       ); // Menampilkan field tertentu
 
     res.status(200).json(transactions);
@@ -113,7 +113,7 @@ const getTransactionById = async (req, res) => {
 // Fungsi untuk memperbarui transaksi berdasarkan ID
 const updateTransactionById = async (req, res) => {
   try {
-    const { ulasan, balasan, denda, kontak, alamatPenjemputan } = req.body;
+    const { ulasan, balasan, denda, kontak, alamatPenjemputan, status } = req.body;
 
     const transaction = await Transaction.findById(req.params.id);
 
@@ -135,8 +135,42 @@ const updateTransactionById = async (req, res) => {
     transaction.balasan = balasan || transaction.balasan;
     transaction.denda = denda || transaction.denda;
     transaction.kontak = kontak || transaction.kontak;
-    transaction.alamatPenjemputan =
-      alamatPenjemputan || transaction.alamatPenjemputan;
+    transaction.alamatPenjemputan = alamatPenjemputan || transaction.alamatPenjemputan;
+    transaction.status = status || transaction.status;
+
+    await transaction.save();
+
+    res.status(200).json(transaction);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Terjadi kesalahan saat memperbarui transaksi" });
+  }
+};
+
+// Fungsi untuk memperbarui transaksi berdasarkan ID
+const updateTransactionByBarangId = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const transaction = await Transaction.findOne({ id_barang: req.params.id });
+
+    if (!transaction) {
+      return res.status(404).json({ message: "Transaksi tidak ditemukan" });
+    }
+
+    // Pastikan transaksi milik user yang sedang login
+    if (transaction.user_id.toString() !== req.user.id) {
+      return res
+        .status(403)
+        .json({
+          message: "Anda tidak memiliki akses untuk memperbarui transaksi ini",
+        });
+    }
+
+    // Update transaksi
+    transaction.status = status || transaction.status;
 
     await transaction.save();
 
@@ -183,5 +217,6 @@ module.exports = {
   getAllTransactions,
   getTransactionById,
   updateTransactionById,
-  deleteTransactionById
+  deleteTransactionById,
+  updateTransactionByBarangId
 };

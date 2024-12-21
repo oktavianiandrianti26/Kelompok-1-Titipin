@@ -38,6 +38,7 @@ export const Buttons = {
   kunjungiTitipin: (onClick) => <Button label="Kunjungi Titipin" variant="greenPrimary" onClick={onClick} />,
   lakukanPembayaran: (onClick) => <Button label="Lakukan Pembayaran" variant="greenPrimary" onClick={onClick} />,
   kirimLokasi: (onClick) => <Button label="Kirim Lokasi" variant="greenPrimary" onClick={onClick} />,
+  ambilBarang: (onClick) => <Button label="Ambil Barang" variant="greenPrimary" onClick={onClick} />,
   tambahWaktu: (onClick) => <Button label="Tambah Waktu" variant="greenSecondary" onClick={onClick} />,
   prosesPengambilan: (onClick) => <Button label="Proses Pengambilan" variant="greenPrimary" onClick={onClick} />,
   simpan: (onClick) => <Button label="Simpan" variant="greenPrimary" onClick={onClick} />,

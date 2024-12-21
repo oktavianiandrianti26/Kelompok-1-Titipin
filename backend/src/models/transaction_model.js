@@ -29,6 +29,11 @@ const TransactionSchema = new mongoose.Schema(
     },
     kota_asal: { type: String, required: true },
     kota_tujuan: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["Dijemput", "Proses", "Selesai"],
+      default: "Dijemput",
+    },
   },
   {
     timestamps: true,

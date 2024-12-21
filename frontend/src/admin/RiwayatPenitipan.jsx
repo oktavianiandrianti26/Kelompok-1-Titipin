@@ -14,6 +14,7 @@ const RiwayatPenitipan = () => {
         const response = await axios.get(
           "http://localhost:3000/api/admin/riwayat"
         );
+        console.log(response.data);
         setTransactions(response.data);
       } catch (err) {
         console.error("Error fetching transactions:", err);
@@ -49,6 +50,18 @@ const RiwayatPenitipan = () => {
               >
                 {/* Data Transaksi (responsif dengan Flexbox) */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  {/* Image Barang */}
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">
+                      Gambar Barang
+                    </p>
+                    <img
+                      src={"http://localhost:3000/uploads/"+item.fileBarang}
+                      alt={item.deskripsi_barang}
+                      className="w-24 h-24 object-cover rounded-lg"
+                    />
+                  </div>
+
                   {/* Nomor Transaksi */}
                   <div>
                     <p className="text-sm font-bold text-gray-700">

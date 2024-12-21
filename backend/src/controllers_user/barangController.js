@@ -74,7 +74,7 @@ exports.getAllBarang = async (req, res) => {
   try {
     const barangList = await Barang.find({ user_id: req.user.id }).populate(
       "user_id",
-      "nama email"
+      "nama email",
     ); // Hanya barang milik user
     res
       .status(200)

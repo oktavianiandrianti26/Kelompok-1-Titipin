@@ -24,7 +24,7 @@ const ManajemenPenitipanBarang = () => {
             },
           }
         );
-
+        console.log(response.data);
         // Menyimpan data transaksi ke dalam state
         setDataPenitipan(response.data);
       } catch (error) {
@@ -77,6 +77,10 @@ const ManajemenPenitipanBarang = () => {
                       <p className="text-gray-500 text-sm">
                         total biaya: {data.total_biaya_jemput}
                       </p>
+                      <p className="text-gray-500 text-sm">
+                        status: {data.status}
+                      </p>
+
                     </div>
                   </div>
                 ))}
