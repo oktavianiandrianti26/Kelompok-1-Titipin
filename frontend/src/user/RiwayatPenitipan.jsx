@@ -14,7 +14,7 @@ const RiwayatPenitipan = () => {
     const fetchTransactionHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/user/riwayat/${localStorage.getItem(
+          `https://api-titipin.vocasia-fsjs-c.fun/api/user/riwayat/${localStorage.getItem(
             "userId"
           )}`
         );
@@ -33,7 +33,7 @@ const RiwayatPenitipan = () => {
       const ulasan = review[transactionId];
       if (!ulasan) return;
       await axios.put(
-        `http://localhost:3000/api/user/riwayat/${transactionId}`,
+        `https://api-titipin.vocasia-fsjs-c.fun/api/user/riwayat/${transactionId}`,
         {
           ulasan,
         }

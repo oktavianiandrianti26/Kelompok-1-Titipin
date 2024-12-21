@@ -14,7 +14,7 @@ function Dashboard() {
       try {
         // Ambil data jumlah_bayar dari endpoint /payments
         const responsePayments = await axios.get(
-          "http://localhost:3000/api/admin/payments"
+          "https://api-titipin.vocasia-fsjs-c.fun/api/admin/payments"
         );
         const dataPayments = responsePayments.data;
   
@@ -38,7 +38,7 @@ function Dashboard() {
   
         // Ambil data jumlah_barang dari endpoint /riwayat
         const responseRiwayat = await axios.get(
-          "http://localhost:3000/api/admin/riwayat"
+          "https://api-titipin.vocasia-fsjs-c.fun/api/admin/riwayat"
         );
         const dataRiwayat = responseRiwayat.data;
   

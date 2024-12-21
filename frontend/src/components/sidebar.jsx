@@ -35,7 +35,7 @@ export function Sidebar({ children }) {
       const endpoint =
         role === "admin"
           ? "/api/admin/profile"
-          : "http://localhost:3000/api/user/profile";
+          : "https://api-titipin.vocasia-fsjs-c.fun/api/user/profile";
       const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
       });

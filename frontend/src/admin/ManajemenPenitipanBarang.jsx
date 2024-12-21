@@ -17,7 +17,7 @@ const ManajemenPenitipanBarang = () => {
       try {
         // Mengambil data transaksi dari API
         const response = await axios.get(
-          "http://localhost:3000/api/transactions",
+          "https://api-titipin.vocasia-fsjs-c.fun/api/transactions",
           {
             headers: {
               Authorization: `Bearer ${token}`,

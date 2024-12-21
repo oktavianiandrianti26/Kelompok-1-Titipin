@@ -20,8 +20,8 @@ const LoginForm = () => {
 
     try {
       let endpoint = email.includes("admin")
-        ? "http://localhost:3000/api/admin/login"
-        : "http://localhost:3000/api/user/login";
+        ? "https://api-titipin.vocasia-fsjs-c.fun/api/admin/login"
+        : "https://api-titipin.vocasia-fsjs-c.fun/api/user/login";
 
       const response = await axios.post(endpoint, {
         email,

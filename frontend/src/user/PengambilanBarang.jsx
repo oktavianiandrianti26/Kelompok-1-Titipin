@@ -22,7 +22,7 @@ const PengambilanBarang = () => {
   useEffect(() => {
     const fetchBarang = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/barang", {
+        const response = await axios.get("https://api-titipin.vocasia-fsjs-c.fun/api/barang", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -55,7 +55,7 @@ const PengambilanBarang = () => {
       }
       // Send only the necessary data for profile update
       const response = await axios.put(
-        `http://localhost:3000/api/transactions/barang/${id_barang}`,
+        `https://api-titipin.vocasia-fsjs-c.fun/api/transactions/barang/${id_barang}`,
         {
           status: "Selesai",
         },

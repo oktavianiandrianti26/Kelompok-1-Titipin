@@ -12,7 +12,7 @@ const UlasanPengguna = () => {
   // Fungsi untuk mengambil data ulasan
   const fetchReviews = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/admin/ulasan");
+      const response = await axios.get("https://api-titipin.vocasia-fsjs-c.fun/api/admin/ulasan");
       setReviews(response.data);
     } catch (err) {
       console.error("Error fetching reviews:", err);
@@ -27,7 +27,7 @@ const UlasanPengguna = () => {
   const handleDeleteReview = async (id) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus ulasan ini?")) {
       try {
-        await axios.delete(`http://localhost:3000/api/admin/ulasan/${id}`);
+        await axios.delete(`https://api-titipin.vocasia-fsjs-c.fun/api/admin/ulasan/${id}`);
         alert("Ulasan berhasil dihapus.");
         fetchReviews();
       } catch (err) {
@@ -49,7 +49,7 @@ const UlasanPengguna = () => {
 
     try {
       // Kirim balasan ke backend
-      await axios.put(`http://localhost:3000/api/admin/ulasan/${id}`, { balasan });
+      await axios.put(`https://api-titipin.vocasia-fsjs-c.fun/api/admin/ulasan/${id}`, { balasan });
 
       // Kirim notifikasi ke backend
       const notificationPayload = {
@@ -58,7 +58,7 @@ const UlasanPengguna = () => {
         user_id: userId,
       };
       await axios.post(
-        `http://localhost:3000/api/user/notifications/push-notifications`,
+        `https://api-titipin.vocasia-fsjs-c.fun/api/user/notifications/push-notifications`,
         notificationPayload,
         { headers: { "Content-Type": "application/json" } }
       );

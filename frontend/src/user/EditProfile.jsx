@@ -30,7 +30,7 @@ const EditProfile = () => {
       }
 
       const response = await axios.get(
-        "http://localhost:3000/api/user/profile",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/user/profile",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ const EditProfile = () => {
     try {
       const token = localStorage.getItem("userToken");
       const response = await axios.post(
-        "http://localhost:3000/api/user/profile/upload",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/user/profile/upload",
         formData,
         {
           headers: {
@@ -103,7 +103,7 @@ const EditProfile = () => {
 
       // Send only the necessary data for profile update
       const response = await axios.put(
-        "http://localhost:3000/api/user/edit-profile",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/user/edit-profile",
         {
           name: userData.name,
           email: userData.email,

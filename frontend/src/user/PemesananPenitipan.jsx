@@ -170,7 +170,7 @@ const PemesananPenitipanCheckout = () => {
       // Mendapatkan token dari localStorage
       const token = localStorage.getItem("userToken");
 
-      const barangResponse = await axios.post("http://localhost:3000/api/barang", formBarang, {
+      const barangResponse = await axios.post("https://api-titipin.vocasia-fsjs-c.fun/api/barang", formBarang, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -187,7 +187,7 @@ const PemesananPenitipanCheckout = () => {
 
       // Kirim data transaksi ke API backend
       const transactionResponse = await fetch(
-        "http://localhost:3000/api/transactions",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/transactions",
         {
           method: "POST", // Menggunakan POST karena kita mengirimkan transaksi
           headers: {
@@ -216,7 +216,7 @@ const PemesananPenitipanCheckout = () => {
 
       // Kirim request pembayaran ke backend untuk mendapatkan token
       const responsePayment = await axios.post(
-        "http://localhost:3000/api/user/payment",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/user/payment",
         paymentData
       );
 
@@ -269,7 +269,7 @@ const PemesananPenitipanCheckout = () => {
   };
 
   const getIdCity = async (city) => {
-    const url = `http://localhost:3000/api/rajaongkir/getCityByName/${city}/kota`;
+    const url = `https://api-titipin.vocasia-fsjs-c.fun/api/rajaongkir/getCityByName/${city}/kota`;
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -306,7 +306,7 @@ const PemesananPenitipanCheckout = () => {
       return;
     }
 
-    const url = `http://localhost:3000/api/rajaongkir/getCost/${city_id_origin}/${city_id_destination}/${formData.berat}/${formData.kurir}`;
+    const url = `https://api-titipin.vocasia-fsjs-c.fun/api/rajaongkir/getCost/${city_id_origin}/${city_id_destination}/${formData.berat}/${formData.kurir}`;
     try {
         const response = await fetch(url);
         const data = await response.json();

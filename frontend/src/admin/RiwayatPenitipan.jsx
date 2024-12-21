@@ -12,7 +12,7 @@ const RiwayatPenitipan = () => {
     const fetchTransactionHistory = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/admin/riwayat"
+          "https://api-titipin.vocasia-fsjs-c.fun/api/admin/riwayat"
         );
         console.log(response.data);
         setTransactions(response.data);
@@ -56,7 +56,7 @@ const RiwayatPenitipan = () => {
                       Gambar Barang
                     </p>
                     <img
-                      src={"http://localhost:3000/uploads/" + item.fileBarang}
+                      src={"https://api-titipin.vocasia-fsjs-c.fun/uploads/" + item.fileBarang}
                       alt={item.deskripsi_barang}
                       className="w-24 h-24 object-cover rounded-lg"
                     />

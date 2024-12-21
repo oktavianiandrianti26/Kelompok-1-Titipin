@@ -13,7 +13,7 @@ const ManajemenPembayaran = ({ showHeader = true, showSidebar = true }) => {
     const fetchPayments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/admin/payments"
+          "https://api-titipin.vocasia-fsjs-c.fun/api/admin/payments"
         );
         setPayments(response.data); // Menyimpan data pembayaran ke state
       } catch (error) {

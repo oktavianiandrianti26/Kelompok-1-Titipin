@@ -14,7 +14,7 @@ const ManajemenPengguna = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/user/users"
+          "https://api-titipin.vocasia-fsjs-c.fun/api/user/users"
         );
         setUsers(response.data.data); // Menyimpan data pengguna di state
       } catch (error) {

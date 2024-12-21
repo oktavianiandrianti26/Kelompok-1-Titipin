@@ -17,7 +17,7 @@ const PengaturanNotifikasi = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/notifications/send-notification",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/notifications/send-notification",
         {
           method: "POST",
           headers: {

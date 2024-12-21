@@ -21,7 +21,7 @@ const PemantauanBarang = () => {
 
       try {
         // Pastikan token benar dan ditambahkan dengan benar ke header
-        const response = await axios.get("http://localhost:3000/api/barang", {
+        const response = await axios.get("https://api-titipin.vocasia-fsjs-c.fun/api/barang", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

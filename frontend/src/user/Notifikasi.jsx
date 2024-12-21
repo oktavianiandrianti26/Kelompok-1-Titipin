@@ -10,7 +10,7 @@ const Notifikasi = () => {
     const fetchNotifikasi = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/user/notifications/get-notifications",
+          "https://api-titipin.vocasia-fsjs-c.fun/api/user/notifications/get-notifications",
           {
             headers: {
               "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const Notifikasi = () => {
   const deleteNotification = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/user/notifications/delete-notification/${id}`,
+        `https://api-titipin.vocasia-fsjs-c.fun/api/user/notifications/delete-notification/${id}`,
         {
           method: "DELETE",
           headers: {

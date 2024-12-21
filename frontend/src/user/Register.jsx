@@ -38,7 +38,7 @@ const RegisterPage = () => {
 
     try {
       // Mengirim data ke backend menggunakan axios
-      const response = await axios.post('http://localhost:3000/api/user/register', userData);
+      const response = await axios.post('https://api-titipin.vocasia-fsjs-c.fun/api/user/register', userData);
       console.log(response.data); // Menampilkan respon dari backend
 
       if (response.data) {

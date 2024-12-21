@@ -41,7 +41,7 @@ const Checkout = () => {
 
       // Send POST request to the backend to create a payment transaction
       const response = await axios.post(
-        "http://localhost:3000/api/user/payment",
+        "https://api-titipin.vocasia-fsjs-c.fun/api/user/payment",
         paymentData
       );
 
