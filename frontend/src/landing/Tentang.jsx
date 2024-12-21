@@ -1,5 +1,5 @@
 import React from "react";
-import titipinImage from "../assets/titipin2.png";
+import titipinImage from "../assets/tentangKami.png";
 
 function Tentang() {
   return (
