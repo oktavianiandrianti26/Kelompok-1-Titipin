@@ -52,7 +52,7 @@ export function Sidebar({ children }) {
       ) {
         setProfileName(response.data.data.name); // Ambil nama user dari data.profile
         if (response.data.data.profileImageUrl) {
-          setProfileImage(`http://localhost:3000${response.data.data.profileImageUrl}`); // Pasang foto profil user
+          setProfileImage(`https://api-titipin.vocasia-fsjs-c.fun${response.data.data.profileImageUrl}`); // Pasang foto profil user
         }
       } else {
         console.error("Data profil tidak valid atau tidak ditemukan.");

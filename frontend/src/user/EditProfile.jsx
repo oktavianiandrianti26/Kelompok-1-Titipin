@@ -137,7 +137,7 @@ const EditProfile = () => {
     if (!profileImageUrl) return defaultImage;
     return profileImageUrl.startsWith("http")
       ? profileImageUrl
-      : `http://localhost:3000${profileImageUrl}`;
+      : `https://api-titipin.vocasia-fsjs-c.fun${profileImageUrl}`;
   };
 
   return (

@@ -68,7 +68,7 @@ const ManajemenPengguna = () => {
                         <img
                           src={
                             user.profileImageUrl
-                              ? `http://localhost:3000${user.profileImageUrl}`
+                              ? `https://api-titipin.vocasia-fsjs-c.fun${user.profileImageUrl}`
                               : profilImage
                           }
                           alt={user.name}
