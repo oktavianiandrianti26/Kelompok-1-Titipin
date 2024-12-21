@@ -1,4 +1,23 @@
 const Barang = require("../models/barang_model");
+const multer = require("multer"); // Pastikan ini diimpor
+const path = require("path"); // Import path untuk mengatur ekstensi file
+
+// Konfigurasi penyimpanan file
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Memastikan path menuju folder uploads yang baru di root
+    cb(null, path.join(__dirname, "../uploads")); // Folder uploads sekarang ada di direktori root
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+    );
+  },
+});
+
+exports.upload = multer({ storage: storage });
 
 // CREATE BARANG
 exports.createBarang = async (req, res) => {
@@ -10,6 +29,10 @@ exports.createBarang = async (req, res) => {
     }
 
     const { deskripsi_barang, jumlah_barang, harga } = req.body;
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    const files = req.file.filename;
 
     // Validasi input
     if (!jumlah_barang) {
@@ -28,6 +51,7 @@ exports.createBarang = async (req, res) => {
       deskripsi_barang,
       jumlah_barang,
       harga,
+      fileBarang: files,
     });
 
     // Simpan ke database

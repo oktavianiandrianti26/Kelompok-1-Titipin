@@ -27,6 +27,8 @@ const TransactionSchema = new mongoose.Schema(
       type: String, // Field untuk menyimpan balasan
       default: "",
     },
+    kota_asal: { type: String, required: true },
+    kota_tujuan: { type: String, required: true },
   },
   {
     timestamps: true,

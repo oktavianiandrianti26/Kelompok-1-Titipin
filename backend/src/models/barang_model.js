@@ -23,6 +23,7 @@ const BarangSchema = new mongoose.Schema(
     ulasan: { type: String, default: null },
     balasan: { type: String, default: "" },
     nomor_riwayat: { type: Number, unique: true },
+    fileBarang: { type: String },
   },
   {
     timestamps: true,

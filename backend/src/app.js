@@ -1,5 +1,5 @@
 const express = require("express");
-
+// const seeder = require("./seeder/seeder");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -32,6 +32,7 @@ const adminRoutes = require("./routes_admin/autentikasi_routes");
 const transactionRoutes = require("./routes_user/transactionRoutes");
 const barangRoutes = require("./routes_user/barangRoutes");
 const feedbackRoutes = require("./routes_admin/feedback_routes");
+const rajaOngkirRoutes = require("./routes_user/rajaongkirRoutes");
 
 // Menambahkan rute ke aplikasi
 app.use("/api/user", riwayatUserRoutes, paymentUserRoutes);
@@ -44,6 +45,7 @@ app.use("/api/barang", barangRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/rajaongkir", rajaOngkirRoutes);
 
 // Log untuk memastikan path yang benar
 console.log("Uploads folder path:", path.join(__dirname, "uploads"));

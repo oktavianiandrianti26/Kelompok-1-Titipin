@@ -16,6 +16,8 @@ const createTransaction = async (req, res) => {
       denda,
       ulasan,
       balasan,
+      kota_asal,
+      kota_tujuan,
     } = req.body;
 
     const user_id = req.user.id; // Ambil user_id dari req.user.id
@@ -27,7 +29,9 @@ const createTransaction = async (req, res) => {
       !duration ||
       !alamatPenjemputan ||
       !jarak_jemput ||
-      !total_biaya_jemput
+      !total_biaya_jemput ||
+      !kota_asal ||
+      !kota_tujuan
     ) {
       return res.status(400).json({ message: "Data tidak lengkap!" });
     }
@@ -44,6 +48,8 @@ const createTransaction = async (req, res) => {
       denda,
       ulasan,
       balasan,
+      kota_asal,
+      kota_tujuan
     });
 
     // Simpan transaksi ke database
@@ -177,5 +183,5 @@ module.exports = {
   getAllTransactions,
   getTransactionById,
   updateTransactionById,
-  deleteTransactionById,
+  deleteTransactionById
 };

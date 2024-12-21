@@ -1,9 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import SidebarUser from "../components/SidebarUser";
 import HeaderUser from "../components/HeaderUser";
 import { useNavigate } from "react-router-dom";
+import hash from 'object-hash';
+import { MapContainer, TileLayer, useMap, Marker, Popup, GeoJSON } from 'react-leaflet'
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
+const markerIcon = new L.Icon({
+  iconUrl: "/src/assets/marker.png",
+  iconSize: [40, 40],
+  iconAnchor: [17, 46], //[left/right, top/bottom]
+  popupAnchor: [0, -46], //[left/right, top/bottom]
+});
 const loadSnap = () => {
   return new Promise((resolve, reject) => {
     if (window.snap) {
@@ -28,12 +38,26 @@ const PemesananPenitipanCheckout = () => {
     waktuSelesai: "",
     alamatPenjemputan: "",
     kontak: "",
+    kurir: "",
+    berat: "",
+    kota_asal: "Bandung",
+    biaya_kirim: 0,
+    kota_tujuan: "",
+    file_barang: null,
   });
   const [harga, setHarga] = useState(0);
   const [userId, setUserId] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  const mapRef = useRef();
+  const location = GetGeoLocation();
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [address, setAddress] = useState(null);
+  const [center, setCenter] = useState({ lat: 51.505, lng: -0.09 });
+  const [loading, setLoading] = useState();
+  // const [geoFeature, setGeoFeature] = useState(null);
 
   // Ambil userId dari localStorage saat pertama kali komponen dimuat
   React.useEffect(() => {
@@ -46,22 +70,46 @@ const PemesananPenitipanCheckout = () => {
   // Fungsi untuk menangani perubahan input form
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    
+    // Update formData immediately with the correct value
+    setFormData((prevFormData) => {
+      const updatedFormData = { ...prevFormData, [name]: value };
 
-    // Update harga berdasarkan jumlah barang
-    if (name === "jumlah_barang") {
-      const jumlah = parseInt(value, 10);
-      setHarga(
-        jumlah === 1
-          ? 5000
-          : jumlah === 2
-          ? 10000
-          : jumlah > 2
-          ? jumlah * 5000
-          : 0
-      );
-    }
-  };
+      // handle file input
+      if (name === "file_barang") {
+        updatedFormData.file_barang = e.target.files[0];
+      }
+
+      // handle the special case to recalculate the price
+      if (
+        name === "waktuMulai" || 
+        name === "waktuSelesai" || 
+        name === "jumlah_barang" || 
+        name === "biaya_kirim"
+      ) {
+        const jumlah = parseInt(updatedFormData.jumlah_barang, 10);
+        const biaya = parseInt(updatedFormData.biaya_kirim, 10);
+        const start = new Date(updatedFormData.waktuMulai);
+        const end = new Date(updatedFormData.waktuSelesai);
+        
+        // Calculate the number of days between start and end dates
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        // Calculate the price
+        setHarga(
+          jumlah === 1
+            ? 5000 + biaya + (diffDays * 5000)
+            : jumlah === 2
+            ? 10000 + biaya + (diffDays * 5000)
+            : jumlah > 2
+            ? jumlah * 5000 + biaya + (diffDays * 5000)
+            : 0
+        );
+      }
+
+      return updatedFormData;
+    });
+};
 
   // Fungsi untuk validasi form
   const validateForm = () => {
@@ -89,11 +137,20 @@ const PemesananPenitipanCheckout = () => {
     // Validasi form
     if (!validateForm()) return;
 
-    const barangData = {
-      deskripsi_barang: formData.deskripsi_barang,
-      jumlah_barang: formData.jumlah_barang,
-      harga: harga,
-    };
+    if(formData.file_barang) {
+      const file = formData.file_barang;
+      const fileExtension = file.name.split('.').pop();
+      const fileName = `${hash(Date.now())}.${fileExtension}`;
+      const newFile = new File([file], fileName, { type: file.type });
+      formData.file_barang = newFile;
+    }
+
+    let formBarang = new FormData();
+    formBarang.append("deskripsi_barang", formData.deskripsi_barang);
+    formBarang.append("jumlah_barang", formData.jumlah_barang);
+    formBarang.append("harga", harga);
+    formBarang.append("fileBarang", formData.file_barang);
+
 
     const transactionData = {
       alamatPenjemputan: formData.alamatPenjemputan,
@@ -105,25 +162,28 @@ const PemesananPenitipanCheckout = () => {
       },
       jarak_jemput: 10, // Gantilah ini dengan nilai yang sesuai
       total_biaya_jemput: harga, // kalkulasi biaya jemput (gratis ongkir = harga barang)
+      kota_asal: formData.kota_asal,
+      kota_tujuan: formData.kota_tujuan,
     };
 
     try {
       // Mendapatkan token dari localStorage
       const token = localStorage.getItem("userToken");
 
-      // Kirim data barang ke API backend
-      const barangResponse = await fetch("http://localhost:3000/api/barang", {
-        method: "POST", // Menggunakan POST karena kita mengirimkan data
+      const barangResponse = await axios.post("http://localhost:3000/api/barang", formBarang, {
         headers: {
-          Authorization: `Bearer ${token}`, // Menambahkan token JWT
-          "Content-Type": "application/json", // Menentukan format data yang dikirim
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(barangData), // Mengirimkan data barang dalam format JSON
       });
-
-      if (!barangResponse.ok) {
-        throw new Error("Gagal menambahkan barang.");
+      console.log("Response Barang:", barangResponse);
+      if(barangResponse.status !== 201){
+        throw new Error("Gagal membuat data barang.");
       }
+
+      // if (!barangResponse.data.success) {
+      //   throw new Error("Gagal membuat data barang.");
+      // }
 
       // Kirim data transaksi ke API backend
       const transactionResponse = await fetch(
@@ -208,8 +268,94 @@ const PemesananPenitipanCheckout = () => {
     }
   };
 
+  const getIdCity = async (city) => {
+    const url = `http://localhost:3000/api/rajaongkir/getCityByName/${city}/kota`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.data.city_id; // Return the city_id directly
+    } catch (error) {
+        console.error("Error fetching city ID:", error);
+        return 0; // Return 0 or handle the error case appropriately
+    }
+  }
+
+  const countCost = async () => {
+    setLoading(true);
+    // Check if data pengirim not null
+    if (!formData.berat || !formData.kurir) {
+        setError("Berat dan kurir harus diisi.");
+        setLoading(false); // Hide the loading
+        return;
+    }
+    // Check if address not null
+    if (!address) {
+        setError("Alamat harus diisi.");
+        setLoading(false); // Hide the loading
+        return;
+    }
+    
+    // Wait for the city IDs to be fetched
+    const city_id_origin = await getIdCity(formData.kota_asal);
+    const city_id_destination = await getIdCity(formData.kota_tujuan);
+
+    // Check if both city IDs were successfully retrieved
+    if (!city_id_origin || !city_id_destination) {
+      setLoading(false); // Hide the loading
+      setError("City IDs not found.");
+      return;
+    }
+
+    const url = `http://localhost:3000/api/rajaongkir/getCost/${city_id_origin}/${city_id_destination}/${formData.berat}/${formData.kurir}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const res = data.data.rajaongkir.results[0].costs;
+        let result = res.find((item) => item.service === "REG");
+        if (!result) {
+          result = res[0];
+        }
+        console.log("Result:", result);
+        setFormData({ ...formData, biaya_kirim: result.cost[0].value });
+    } catch (error) {
+        console.error("Error fetching cost:", error);
+        setError("Failed to fetch cost data.");
+    }finally {
+      // Hide loading once the fetch is done
+      setLoading(false);
+    }
+  };
+
+  const showMyLocation = async () => {
+    if (location.loaded && !location.error) {
+      mapRef.current.flyTo([
+          location.coordinates.lat,
+          location.coordinates.lng,
+      ]);
+      setLongitude(location.coordinates.lng);
+      setLatitude(location.coordinates.lat);
+      setAddress(location.address);
+      setFormData({ ...formData, kota_tujuan: location.address.city });
+    } else {
+      alert(location.error.message);
+    }
+  };
   return (
     <div className="flex min-h-screen">
+      {/* Loading Overlay */}
+      {loading && (
+        <div style={{zIndex:9999}} className="flex justify-center items-center h-screen fixed top-0 left-0 right-0 bottom-0 w-full z-50 overflow-hidden bg-gray-700 opacity-75">
+          <div className="spinner-border animate-spin inline-block w-8 h-8 rounded-full" role="status">
+              <span className="visually-hidden">
+                  <svg className="animate-spin -inline-block w-8 h-8 border-4 rounded-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+              </span>
+          </div>
+        </div>
+      )}
       <SidebarUser />
       <div className="flex-1">
         <HeaderUser />
@@ -298,6 +444,126 @@ const PemesananPenitipanCheckout = () => {
                   className="w-full border rounded p-2 bg-[#d1fae5]"
                 />
               </div>
+              <div>
+                <label className="block text-gray-700">Foto Barang</label>
+                <input
+                  type="file"
+                  name="file_barang"
+                  onChange={handleChange}
+                  className="w-full border rounded p-2 bg-[#d1fae5]"
+                />
+              </div>
+              <div>
+                <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{ height: "400px" }} ref={mapRef}>
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[location.coordinates.lat,location.coordinates.lng]} icon={markerIcon}>
+                      <Popup>Lokasi Saya</Popup>
+                  </Marker>
+                </MapContainer>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700">Provinsi</label>
+                  <input
+                    type="text"
+                    name="deskripsi_barang"
+                    value={address ? address.state : ''}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2 bg-[#d1fae5]"
+                    required
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Kota</label>
+                  <input
+                    type="text"
+                    name="deskripsi_barang"
+                    value={address ? address.city : ''}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2 bg-[#d1fae5]"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div>
+                <button
+                  className="bg-emerald-500 text-white px-6 py-2 rounded-lg hover:bg-emerald-600"
+                  onClick={showMyLocation}
+                >
+                  Cari Lokasi
+                </button>
+              </div>
+            </div>
+
+            {/* Data Pengiriman */}
+            <div className="rounded-lg p-6 space-y-4 border border-emerald-500">
+              <h2 className="text-lg font-semibold text-gray-700 mb-4">
+                Data Pengiriman
+              </h2>
+              <div>
+                <label className="block text-gray-700">Kota Asal</label>
+                <input
+                  type="text"
+                  name="asal"
+                  value="Bandung" // Ganti dengan kota asal
+                  className="w-full border rounded p-2 bg-[#d1fae5]"
+                  required
+                  disabled
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Berat (gram)</label>
+                <input
+                  type="number"
+                  name="berat"
+                  className="w-full border rounded p-2 bg-[#d1fae5]"
+                  value={formData.berat}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Kurir</label>
+                {/* <input
+                  type="text"
+                  name="kurir"
+                  value="JNE"
+                  onChange={handleChange}
+                  className="w-full border rounded p-2 bg-[#d1fae5]"
+                  required
+                  disabled
+                /> */}
+                <select name="kurir" id="kurir" className="w-full border rounded p-2 bg-[#d1fae5]" onChange={handleChange} value={formData.kurir}>
+                  <option selected disabled value="">Pilih Kurir</option>
+                  <option value={"jne"}>JNE</option>
+                  <option value={"tiki"}>TIKI</option>
+                  <option value={"pos"}>POS</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-700">Biaya Pengiriman</label>
+                <input
+                  type="number"
+                  name="biaya"
+                  value={formData.biaya_kirim}
+                  onChange={handleChange}
+                  className="w-full border rounded p-2 bg-[#d1fae5]"
+                  required
+                  disabled
+                />
+              </div>
+              <div>
+                <button
+                  className="bg-emerald-500 text-white px-6 py-2 rounded-lg hover:bg-emerald-600"
+                  onClick={countCost}
+                >
+                  Hitung Biaya
+                </button>
+              </div>
             </div>
 
             {/* Data Waktu */}
@@ -352,5 +618,60 @@ const PemesananPenitipanCheckout = () => {
     </div>
   );
 };
+
+const GetGeoLocation = () => {
+  const [location, setLocation] = useState({
+    loaded: false,
+    coordinates: { lat: "", lng: "" },
+  });
+
+  const onSuccess = (location) => {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.coords.latitude}&lon=${location.coords.longitude}&accept-language=id`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setLocation({
+          loaded: true,
+          coordinates: {
+            lat: location.coords.latitude,
+            lng: location.coords.longitude,
+          },
+          address: data.address,
+        });
+      });
+
+    // setLocation({
+    //     loaded: true,
+    //     coordinates: {
+    //         lat: location.coords.latitude,
+    //         lng: location.coords.longitude,
+    //     },
+    // });
+  };
+
+  const onError = (error) => {
+    setLocation({
+        loaded: true,
+        error: {
+            code: error.code,
+            message: error.message,
+        },
+    });
+  };
+
+  useEffect(() => {
+    if (!("geolocation" in navigator)) {
+        onError({
+            code: 0,
+            message: "Geolocation not supported",
+        });
+    }
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+  }, []);
+
+  return location;
+}
+
 
 export default PemesananPenitipanCheckout;
