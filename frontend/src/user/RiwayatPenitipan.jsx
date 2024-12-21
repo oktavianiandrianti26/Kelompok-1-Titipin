@@ -94,10 +94,10 @@ const RiwayatPenitipan = () => {
                   </div>
 
                   {/* Total Harga */}
-                  <div>
+                  {/* <div>
                     <p className="text-sm font-bold text-gray-700">Total</p>
                     <p>Rp. {item.harga || "Rp. 0"}</p>
-                  </div>
+                  </div> */}
 
                   {/* Ulasan */}
                   <div className="flex flex-col items-start">

@@ -56,7 +56,7 @@ const RiwayatPenitipan = () => {
                       Gambar Barang
                     </p>
                     <img
-                      src={"http://localhost:3000/uploads/"+item.fileBarang}
+                      src={"http://localhost:3000/uploads/" + item.fileBarang}
                       alt={item.deskripsi_barang}
                       className="w-24 h-24 object-cover rounded-lg"
                     />
@@ -96,10 +96,10 @@ const RiwayatPenitipan = () => {
                   </div>
 
                   {/* Total Harga */}
-                  <div>
+                  {/* <div>
                     <p className="text-sm font-bold text-gray-700">Total</p>
                     <p>Rp. {item.harga || "Rp. 0"}</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
