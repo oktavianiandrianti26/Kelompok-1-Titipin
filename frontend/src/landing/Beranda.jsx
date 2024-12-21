@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../components/Button";
-import titipinImage from "../assets/titipin1.png";
+import titipinImage from "../assets/beranda.png";
 
 function Beranda() {
   const handleClick = () => {
