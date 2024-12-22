@@ -66,7 +66,6 @@ const register = async (req, res) => {
   }
 };
 
-// Login
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -81,14 +80,10 @@ const login = async (req, res) => {
       return ResponseAPI.error(res, "Email atau password salah", 400);
     }
 
-    let token = user.token;
-    if (!token) {
-      token = jwt.sign({ user_id: user._id, role: "user" }, jwtSecret, {
-        expiresIn: "1d",
-      });
-      user.token = token;
-      await user.save();
-    }
+    // Generate token baru
+    let token = jwt.sign({ user_id: user._id, role: "user" }, jwtSecret);
+    user.token = token;
+    await user.save();
 
     return ResponseAPI.success(
       res,
